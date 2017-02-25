@@ -1,7 +1,22 @@
 import ast
+import sys
+from distutils.command.install import install as _install
+from distutils.core import setup
 
 import re
-from setuptools import setup, find_packages
+from setuptools import find_packages
+
+
+def _post_install():
+    from subprocess import call
+    call([sys.executable.replace("python", "pip"), "install", "-r", "requirements.txt"])
+
+
+class install(_install):
+    def run(self):
+        _install.run(self)
+        self.execute(_post_install, (self.install_lib,),
+                     msg="Running post install task")
 
 
 def package_meta():
@@ -38,13 +53,5 @@ setup(
     keywords='aws helper',
     packages=find_packages(),
     version=_lu_meta['version'],
-    install_requires=[
-        "boto3",
-        "requests_aws4auth",
-        "requests",
-        "helper==1.0.0"
-    ],
-    dependency_links=[
-        "https://github.com/wobeng/helper/archive/master.zip#egg=helper-1.0.0"
-    ]
+    cmdclass={'install': install}
 )

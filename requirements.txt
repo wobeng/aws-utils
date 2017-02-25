@@ -1,4 +1,4 @@
 boto3
 requests_aws4auth
 requests
-https://github.com/wobeng/helper/archive/master.zip#egg=helper-9999999
+git+https://git@github.com/wobeng/helper.git@master
