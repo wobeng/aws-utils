@@ -42,7 +42,7 @@ setup(
         "boto3",
         "requests_aws4auth",
         "requests",
-        "helper"
+        "helper==9999999"
     ],
     dependency_links=[
         "https://github.com/wobeng/helper/archive/master.zip#egg=helper-9999999"
