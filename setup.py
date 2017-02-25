@@ -5,15 +5,14 @@ from distutils.core import setup
 
 import re
 from setuptools import find_packages
-
+import os
 
 
 class install(_install):
     def run(self):
         _install.run(self)
         from subprocess import call
-        call([sys.executable.replace("python", "pip"), "install", "-r", "requirements.txt"])
-
+        call([sys.executable.replace("python", "pip"), "install", "-r", os.path.join(os.getcwd(),"requirements.txt")])
 
 def package_meta():
     """Read __init__.py for global package metadata.
