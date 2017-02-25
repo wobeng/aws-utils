@@ -45,6 +45,6 @@ setup(
         "helper"
     ],
     dependency_links=[
-        "git+https://git@github.com/wobeng/helper.git@master#egg=helper"
+        "git+https://git@github.com/wobeng/helper.git@master#egg=helper-1.0.0"
     ]
 )
