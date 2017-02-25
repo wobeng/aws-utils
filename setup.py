@@ -1,18 +1,8 @@
 import ast
-import sys
-from distutils.command.install import install as _install
-from distutils.core import setup
 
 import re
-from setuptools import find_packages
-import os
+from setuptools import setup, find_packages
 
-
-class install(_install):
-    def run(self):
-        _install.run(self)
-        from subprocess import call
-        call([sys.executable.replace("python", "pip"), "install", "-r", os.path.join(os.getcwd(),"requirements.txt")])
 
 def package_meta():
     """Read __init__.py for global package metadata.
@@ -48,5 +38,5 @@ setup(
     keywords='aws helper',
     packages=find_packages(),
     version=_lu_meta['version'],
-    cmdclass={'install': install}
+    dependency_links=['http://github.com/wobeng/helper/tarball/master#egg=helper-1.0.0']
 )
