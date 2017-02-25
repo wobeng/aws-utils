@@ -37,5 +37,14 @@ setup(
     license=_lu_meta['license'],
     keywords='aws helper',
     packages=find_packages(),
-    version=_lu_meta['version']
+    version=_lu_meta['version'],
+    install_requires=[
+        "boto3",
+        "requests_aws4auth",
+        "requests",
+        "helper"
+    ],
+    dependency_links=[
+        "git+https://git@github.com/wobeng/helper.git@master#egg=helper"
+    ]
 )
