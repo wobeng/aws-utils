@@ -1,8 +1,12 @@
 import ast
-from setuptools.command.install import install
-import re,sys
-from setuptools import setup, find_packages
 from subprocess import call
+
+import os
+import re
+import sys
+from setuptools import setup, find_packages
+from setuptools.command.install import install
+
 
 def package_meta():
     """Read __init__.py for global package metadata.
@@ -29,11 +33,15 @@ def package_meta():
 
 _lu_meta = package_meta()
 
+
 class my_install(install):
     def run(self):
         install.run(self)
-        cmd = [sys.executable.replace("python","pip"), "install", "-r", "requirements.txt"]
-        call(cmd)
+        requirements_file = os.path.join(os.getcwd(), "requirements.txt")
+        if os.path.isfile(requirements_file):
+            cmd = [sys.executable.replace("python", "pip"), "install", "-r", requirements_file]
+            call(cmd)
+
 
 setup(
     name='aws-helper',

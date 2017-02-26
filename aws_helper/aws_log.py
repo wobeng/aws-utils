@@ -7,7 +7,6 @@ from helper import date_time
 
 
 class Log:
-
     def __init__(self, session):
         self._logs = session.client("logs")
 
