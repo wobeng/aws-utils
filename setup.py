@@ -38,6 +38,6 @@ setup(
     keywords='aws helper',
     packages=find_packages(),
     version=_lu_meta['version'],
-    dependency_links=['git+https://github.com/wobeng/helper.git#egg=helper-1.0.0'],
-    install_requires = ['helper']
+    dependency_links=['git+https://github.com/wobeng/helper.git#egg=y_helper-1.0.0'],
+    install_requires = ['y_helper']
 )
