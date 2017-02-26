@@ -1,8 +1,8 @@
 import ast
-
-import re
+from setuptools.command.install import install
+import re,sys
 from setuptools import setup, find_packages
-
+import subprocess
 
 def package_meta():
     """Read __init__.py for global package metadata.
@@ -29,6 +29,13 @@ def package_meta():
 
 _lu_meta = package_meta()
 
+class my_install(install):
+    def run(self):
+        install.run(self)
+        cmd = [sys.executable.replace("python","pip"), "install", "https://github.com/wobeng/helper/archive/master.zip"]
+        with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
+            print(proc.stdout.read())
+
 setup(
     name='aws-helper',
     description='aws helper',
@@ -38,6 +45,5 @@ setup(
     keywords='aws helper',
     packages=find_packages(),
     version=_lu_meta['version'],
-    dependency_links=['https://github.com/liamzebedee/scandir/archive/master.zip#egg=scandir-0.1'],
-    install_requires = ['scandir==0.1']
+    cmdclass={'install': my_install},
 )
