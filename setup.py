@@ -38,6 +38,6 @@ setup(
     keywords='aws helper',
     packages=find_packages(),
     version=_lu_meta['version'],
-    dependency_links=['git+https://github.com/wobeng/helper.git@master#egg=helper-1.0.0'],
-    install_requires = ['helper==1.0.0']
+    dependency_links=['git+https://github.com/liamzebedee/scandir.git#egg=scandir-0.1'],
+    install_requires = ['scandir']
 )
