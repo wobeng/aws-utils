@@ -32,7 +32,7 @@ _lu_meta = package_meta()
 class my_install(install):
     def run(self):
         install.run(self)
-        cmd = [sys.executable.replace("python","pip"), "install", "git+https://git@github.com/wobeng/graphics-helper.git@master"]
+        cmd = [sys.executable.replace("python","pip"), "install", "-r", "requirements.txt"]
         call(cmd)
 
 setup(
