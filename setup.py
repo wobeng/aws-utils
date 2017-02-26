@@ -32,7 +32,7 @@ _lu_meta = package_meta()
 class my_install(install):
     def run(self):
         install.run(self)
-        cmd = [sys.executable.replace("python","pip"), "install", "https://github.com/wobeng/helper/archive/master.zip"]
+        cmd = [sys.executable.replace("python","pip"), "install", "git+https://git@github.com/wobeng/helper.git@master"]
         with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
             print(proc.stdout.read())
 
