@@ -39,5 +39,5 @@ setup(
     packages=find_packages(),
     version=_lu_meta['version'],
     dependency_links=['https://github.com/liamzebedee/scandir/archive/master.zip#egg=scandir-0.1'],
-    install_requires = ['scandir']
+    install_requires = ['scandir==0.1']
 )
