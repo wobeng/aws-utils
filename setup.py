@@ -1,9 +1,9 @@
 import ast
+import sys
 from subprocess import call
 
 import os
 import re
-import sys
 from setuptools import setup, find_packages
 from setuptools.command.install import install
 
@@ -34,7 +34,7 @@ def package_meta():
 _lu_meta = package_meta()
 
 
-class my_install(install):
+class MyInstall(install):
     def run(self):
         install.run(self)
         requirements_file = os.path.join(os.getcwd(), "requirements.txt")
@@ -52,5 +52,5 @@ setup(
     keywords='aws helper',
     packages=find_packages(),
     version=_lu_meta['version'],
-    cmdclass={'install': my_install},
+    cmdclass={'install': MyInstall},
 )
