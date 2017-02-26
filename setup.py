@@ -2,7 +2,7 @@ import ast
 from setuptools.command.install import install
 import re,sys
 from setuptools import setup, find_packages
-import subprocess
+from subprocess import call
 
 def package_meta():
     """Read __init__.py for global package metadata.
@@ -33,8 +33,7 @@ class my_install(install):
     def run(self):
         install.run(self)
         cmd = [sys.executable.replace("python","pip"), "install", "git+https://git@github.com/wobeng/helper.git@master"]
-        with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
-            print(proc.stdout.read())
+        call(cmd)
 
 setup(
     name='aws-helper',
