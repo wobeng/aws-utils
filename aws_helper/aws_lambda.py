@@ -6,10 +6,12 @@ class Lambda:
         self._lambda = session.client("lambda")
 
     def invoke(self, function_name, payload):
+        print(payload)
         response = self._lambda.invoke(
             FunctionName=function_name,
             Payload=json.dumps(payload)
         )
+        print json.dumps(payload)
         if response["StatusCode"] != 200 or "FunctionError" in response:
             response["Payload"] = response["Payload"].read()
             raise BaseException(response)
