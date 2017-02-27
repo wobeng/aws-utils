@@ -12,6 +12,7 @@ class Log:
 
     def __call__(self, company, group, subgroup):
         self._log_group_name = "/{}/{}/{}".format(company, group, subgroup)
+        return self
 
     def get_log(self, start_date=None, end_date=None, log_id=None, log_filter=None):
 
