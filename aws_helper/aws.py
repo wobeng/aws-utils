@@ -1,15 +1,14 @@
 import boto3
+import os
+from helper import misc
 
 from aws_gateway import Gateway
 from aws_lambda import Lambda
 from aws_log import Log
 from aws_s3 import S3
 
-import os
-from helper import misc
 
 class Aws:
-
     def __init__(self, session=None, profile_name=None, region_name=None):
 
         # load instance if available
@@ -19,7 +18,6 @@ class Aws:
             region_name = instance.REGION
         except BaseException as e:
             pass
-
 
         if session:
             self.session = session
@@ -33,6 +31,7 @@ class Aws:
 
     def load_config(self):
 
+        # load config from db
         bucket = os.environ.get("CONFIG_BUCKET", None)
         key = os.environ.get("KEY", None)
 
@@ -43,5 +42,5 @@ class Aws:
         except BaseException as e:
             pass
 
-        config = self.aws_s3.get_json_object(bucket,key)
+        config = self.aws_s3.get_json_object(bucket, key)
         misc.import_env_vars(config)
