@@ -1,5 +1,5 @@
 import json
-
+from helper import misc
 import os
 
 
@@ -21,3 +21,15 @@ class S3:
         output = os.path.join(save_dir, key.split("/")[-1])
         self._s3.meta.client.download_file(bucket, key, output)
         return output
+
+    def cdn_find_and_replace(self,body,bucket,map):
+        cdn_map = self.get_json_object(bucket,map)
+        fnr = {}
+        for path in cdn_map:
+            find_path = path
+            if find_path in body:
+                fnr[find_path] = cdn_map[find_path]["fingerprint"]
+        if fnr:
+            replace = misc.make_xlat(fnr)
+            body = replace(body)
+        return body
