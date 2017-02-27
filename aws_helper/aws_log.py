@@ -51,7 +51,7 @@ class Log:
 
         while True:
 
-            now = datetime.datetime.utcnow()
+            now = datetime.utcnow()
             log_stream = "{}/{}/{}/[$LATEST]{}".format(now.year, now.month, now.day, log_id)
 
             try:
