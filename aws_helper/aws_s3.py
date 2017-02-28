@@ -20,7 +20,7 @@ class S3:
 
     def download_object(self, bucket, key, save_dir):
         output = os.path.join(save_dir, key.split("/")[-1])
-        self._s3.meta.client.download_file(bucket, key, output)
+        self._s3.download_file(bucket, key, output)
         return output
 
     def cdn_find_and_replace(self, body, bucket, map):
