@@ -23,6 +23,18 @@ class S3:
         self._s3.download_file(bucket, key, output)
         return output
 
+    def generate_sign(self, bucket,key,size,content_type_prefix):
+        conditions = list()
+        conditions.append(["content-length-range", 1, size])
+        conditions.append({"success_action_status": "201"})
+        conditions.append(["starts-with", "$Content-Type", content_type_prefix + "/"])
+        return self._s3.generate_presigned_post(
+            bucket,
+            key,
+            Fields=None,
+            Conditions=conditions,
+            ExpiresIn=3600
+        )
     def cdn_find_and_replace(self, body, bucket, map):
         cdn_map = self.get_json_object(bucket, map)
         fnr = {}
