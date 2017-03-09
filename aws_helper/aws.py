@@ -29,11 +29,11 @@ class Aws:
         self.aws_log = Log(self.session)
         self.aws_s3 = S3(self.session)
 
-    def load_config(self):
+    def load_config(self,bucket=None,key=None):
 
         # load config from db
-        bucket = os.environ.get("CONFIG_BUCKET", None)
-        key = os.environ.get("KEY", None)
+        bucket = os.environ.get("CONFIG_BUCKET", bucket)
+        key = os.environ.get("KEY", key)
 
         try:
             import instance
