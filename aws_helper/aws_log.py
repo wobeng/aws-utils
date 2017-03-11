@@ -8,7 +8,7 @@ from helper import date_time
 
 class Log:
     def __init__(self, session):
-        self._logs = session.client("logs")
+        self.client = session.client("logs")
 
     def __call__(self, company, group, subgroup):
         self._log_group_name = "/{}/{}/{}".format(company, group, subgroup)
@@ -41,7 +41,7 @@ class Log:
             flight["filterPattern"] = filter_data
 
         try:
-            response = self._logs.filter_log_events(**flight)
+            response = self.client.filter_log_events(**flight)
             return response
         except exceptions.ClientError as e:
             if e.response["Error"]["Code"] == "ResourceNotFoundException":
@@ -65,7 +65,7 @@ class Log:
                         }
                     ]
                 }
-                response = self._logs.describe_log_streams(
+                response = self.client.describe_log_streams(
                     logGroupName=self._log_group_name,
                     logStreamNamePrefix=log_stream
                 )
@@ -73,18 +73,18 @@ class Log:
                     if "uploadSequenceToken" in response["logStreams"][0]:
                         log_event["sequenceToken"] = response["logStreams"][0]["uploadSequenceToken"]
 
-                        self._logs.put_log_events(**log_event)
+                        self.client.put_log_events(**log_event)
                 break
             except KeyError:
-                self._logs.create_log_stream(logGroupName=self._log_group_name,
-                                             logStreamName=log_stream)
+                self.client.create_log_stream(logGroupName=self._log_group_name,
+                                              logStreamName=log_stream)
             except exceptions.ClientError as e:
                 if e.response["Error"]["Code"] == "ResourceNotFoundException":
                     if "log stream" in e.message:
-                        self._logs.create_log_stream(logGroupName=self._log_group_name,
-                                                     logStreamName=log_stream)
+                        self.client.create_log_stream(logGroupName=self._log_group_name,
+                                                      logStreamName=log_stream)
                     elif "log group" in e.message:
-                        self._logs.create_log_group(logGroupName=self._log_group_name)
+                        self.client.create_log_group(logGroupName=self._log_group_name)
                     else:
                         break
                 else:

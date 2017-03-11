@@ -3,10 +3,10 @@ import json
 
 class Lambda:
     def __init__(self, session):
-        self._lambda = session.client("lambda")
+        self.client = session.client("lambda")
 
     def invoke(self, function_name, payload):
-        response = self._lambda.invoke(
+        response = self.client.invoke(
             FunctionName=function_name,
             Payload=json.dumps(payload)
         )

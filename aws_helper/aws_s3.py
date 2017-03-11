@@ -6,10 +6,10 @@ from helper import misc
 
 class S3:
     def __init__(self, session):
-        self._s3 = session.client("s3")
+        self.client = session.client("s3")
 
     def get_object(self, bucket, key, **kwargs):
-        response = self._s3.get_object(Bucket=bucket, Key=key, **kwargs)
+        response = self.client.get_object(Bucket=bucket, Key=key, **kwargs)
         response = response['Body'].read()
         return response
 
@@ -20,7 +20,7 @@ class S3:
 
     def download_object(self, bucket, key, save_dir):
         output = os.path.join(save_dir, key.split("/")[-1])
-        self._s3.download_file(bucket, key, output)
+        self.client.download_file(bucket, key, output)
         return output
 
     def generate_sign(self, bucket,key,size,content_type_prefix):
