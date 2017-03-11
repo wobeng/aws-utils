@@ -29,7 +29,7 @@ class Aws:
         self.aws_log = Log(self.session)
         self.aws_s3 = S3(self.session)
 
-    def load_config(self,bucket=None,key=None):
+    def load_config(self, bucket=None, key=None):
 
         # load config from db
         bucket = os.environ.get("CONFIG_BUCKET", bucket)
