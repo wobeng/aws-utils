@@ -6,6 +6,8 @@ from aws_gateway import Gateway
 from aws_lambda import Lambda
 from aws_log import Log
 from aws_s3 import S3
+from aws_dynamodb import Dynamodb
+from aws_cognito import Cognito
 
 
 class Aws:
@@ -28,6 +30,9 @@ class Aws:
         self.aws_lambda = Lambda(self.session)
         self.aws_log = Log(self.session)
         self.aws_s3 = S3(self.session)
+        self.aws_dynamodb = Dynamodb(self.session)
+        self.aws_cognito = Cognito(self.session)
+
 
     def load_config(self, bucket=None, key=None):
 
