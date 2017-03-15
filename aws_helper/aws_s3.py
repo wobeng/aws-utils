@@ -3,6 +3,8 @@ import json
 import os
 from helper import misc
 
+from collections import OrderedDict
+from operator import itemgetter
 
 class S3:
     def __init__(self, session):
@@ -13,9 +15,11 @@ class S3:
         response = response['Body'].read()
         return response
 
-    def get_json_object(self, bucket, key, **kwargs):
+    def get_json_object(self, bucket, key, sort=False, **kwargs):
         response = self.get_object(bucket, key, **kwargs)
         response = json.loads(response)
+        if sort:
+            response = OrderedDict(sorted(response.items(), key=itemgetter(1)))
         return response
 
     def download_object(self, bucket, key, save_dir):
