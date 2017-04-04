@@ -4,7 +4,7 @@ from datetime import datetime
 
 from botocore import exceptions
 from helper import date_time
-
+import helper.misc
 
 class Log:
     def __init__(self, session):
@@ -44,6 +44,7 @@ class Log:
             response = self.client.filter_log_events(**flight)
             return response
         except exceptions.ClientError as e:
+            helper.misc.process_exception(e)
             if e.response["Error"]["Code"] == "ResourceNotFoundException":
                 raise KeyError
 
@@ -75,10 +76,12 @@ class Log:
 
                         self.client.put_log_events(**log_event)
                 break
-            except KeyError:
+            except KeyError as e:
+                helper.misc.process_exception(e)
                 self.client.create_log_stream(logGroupName=self._log_group_name,
                                               logStreamName=log_stream)
             except exceptions.ClientError as e:
+                helper.misc.process_exception(e)
                 if e.response["Error"]["Code"] == "ResourceNotFoundException":
                     if "log stream" in e.message:
                         self.client.create_log_stream(logGroupName=self._log_group_name,
