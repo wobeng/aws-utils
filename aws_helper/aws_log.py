@@ -40,6 +40,8 @@ class Log:
             filter_data += "}"
             flight["filterPattern"] = filter_data
 
+            flight["logGroupName"] = self._log_group_name
+
         try:
             response = self.client.filter_log_events(**flight)
             return response
@@ -74,7 +76,7 @@ class Log:
                     if "uploadSequenceToken" in response["logStreams"][0]:
                         log_event["sequenceToken"] = response["logStreams"][0]["uploadSequenceToken"]
 
-                        self.client.put_log_events(**log_event)
+                self.client.put_log_events(**log_event)
                 break
             except KeyError as e:
                 helper.misc.process_exception(e)
