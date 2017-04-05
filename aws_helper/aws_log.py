@@ -40,6 +40,8 @@ class Log:
             filter_data += "}"
             flight["filterPattern"] = filter_data
 
+            flight["logGroupName"] = _log_group_name
+
         try:
             response = self.client.filter_log_events(**flight)
             return response
