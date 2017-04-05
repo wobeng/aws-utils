@@ -74,7 +74,7 @@ class Log:
                     if "uploadSequenceToken" in response["logStreams"][0]:
                         log_event["sequenceToken"] = response["logStreams"][0]["uploadSequenceToken"]
 
-                        self.client.put_log_events(**log_event)
+                self.client.put_log_events(**log_event)
                 break
             except KeyError as e:
                 helper.misc.process_exception(e)
