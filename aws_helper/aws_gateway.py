@@ -16,7 +16,7 @@ class Gateway:
         print(cred.secret_key)
         print(cred.token)
         print(session.region_name)
-        print(traceback.print_stack())
+        print(traceback.print_stack(limit=6))
     def invoke(self, method, endpoint, data=None, json=None, params=None):
         method = getattr(requests, method)
         response = method(endpoint, data=data, params=params, json=json, auth=self.auth)
