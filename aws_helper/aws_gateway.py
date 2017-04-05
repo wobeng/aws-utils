@@ -11,7 +11,10 @@ class Gateway:
             session.region_name,
             "execute-api", session_token=cred.token
         )
-
+        print(cred.access_key)
+        print(cred.secret_key)
+        print(cred.token)
+        print(session.region_name)
     def invoke(self, method, endpoint, data=None, json=None, params=None):
         method = getattr(requests, method)
         response = method(endpoint, data=data, params=params, json=json, auth=self.auth)
