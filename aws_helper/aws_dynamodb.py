@@ -18,5 +18,5 @@ class Dynamodb:
     def query(self,table,**kwargs):
         table = self.resource.Table(os.environ[table])
         response = table.query(**kwargs)
-        if ["Items"] in response and response["Items"]:
+        if "Items" in response and response["Items"]:
             return response["Items"]
