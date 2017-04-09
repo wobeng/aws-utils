@@ -20,3 +20,7 @@ class Dynamodb:
         response = table.query(**kwargs)
         if "Items" in response and response["Items"]:
             return response["Items"]
+
+    def delete_item(self, table, **kwargs):
+        table = self.resource.Table(os.environ[table])
+        table.delete_item(**kwargs)
