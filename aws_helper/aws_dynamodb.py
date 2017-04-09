@@ -5,18 +5,18 @@ class Dynamodb:
         self.client = session.client("dynamodb")
         self.resource = session.resource("dynamodb")
 
-    def put_item(self, table, item):
+    def put_item(self, table, **kwargs):
         table = self.resource.Table(os.environ[table])
-        table.put_item(Item=item)
+        table.put_item(**kwargs)
 
-    def get_item(self, table, key):
+    def get_item(self, table, **kwargs):
         table = self.resource.Table(os.environ[table])
-        response = table.get_item(Key=key, ConsistentRead=True)
+        response = table.get_item(ConsistentRead=True,**kwargs)
         if "Item" in response and response["Item"]:
             return response["Item"]
 
-    def query(self,table,attributes):
+    def query(self,table,**kwargs):
         table = self.resource.Table(os.environ[table])
-        response = table.query(**attributes)
+        response = table.query(**kwargs)
         if ["Items"] in response and response["Items"]:
             return response["Items"]
