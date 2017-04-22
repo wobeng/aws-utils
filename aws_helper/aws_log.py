@@ -2,9 +2,10 @@ import json
 import time
 from datetime import datetime
 
+import helper.misc
 from botocore import exceptions
 from helper import date_time
-import helper.misc
+
 
 class Log:
     def __init__(self, session):

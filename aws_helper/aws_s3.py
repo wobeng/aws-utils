@@ -1,10 +1,10 @@
 import json
+from collections import OrderedDict
+from operator import itemgetter
 
 import os
 from helper import misc
 
-from collections import OrderedDict
-from operator import itemgetter
 
 class S3:
     def __init__(self, session):

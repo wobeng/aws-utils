@@ -12,9 +12,9 @@ class Gateway:
             "execute-api",
             session_token=creds.token
         )
-    def invoke(self, method, endpoint,headers = None,params=None, data=None, json=None):
+
+    def invoke(self, method, endpoint, headers=None, params=None, data=None, json=None):
         method = getattr(requests, method)
-        response = method(endpoint,auth=self.auth,headers = headers,params=params, data=data, json=json)
+        response = method(endpoint, auth=self.auth, headers=headers, params=params, data=data, json=json)
         response.raise_for_status()
         return response
-
