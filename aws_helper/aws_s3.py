@@ -27,11 +27,12 @@ class S3:
         self.client.download_file(bucket, key, output)
         return output
 
-    def generate_sign(self, bucket, key, size, content_type_prefix):
+    def generate_sign(self, bucket, key, size, content_type_prefix = None):
         conditions = list()
         conditions.append(["content-length-range", 1, size])
         conditions.append({"success_action_status": "201"})
-        conditions.append(["starts-with", "$Content-Type", content_type_prefix + "/"])
+        if content_type_prefix:
+            conditions.append(["starts-with", "$Content-Type", content_type_prefix + "/"])
         return self.client.generate_presigned_post(
             bucket,
             key,
