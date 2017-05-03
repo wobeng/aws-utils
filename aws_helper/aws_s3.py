@@ -32,7 +32,7 @@ class S3:
         conditions.append(["content-length-range", 1, size])
         conditions.append({"success_action_status": "201"})
         if secure:
-            conditions.append({"x-amz-server-side-encryption", "AES256"})
+            conditions.append({"x-amz-server-side-encryption" : "AES256"})
         if content_type_prefix:
             conditions.append(["starts-with", "$Content-Type", content_type_prefix + "/"])
         return self.client.generate_presigned_post(
