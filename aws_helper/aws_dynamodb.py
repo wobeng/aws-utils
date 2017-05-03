@@ -9,6 +9,7 @@ class Dynamodb:
         self.resource = session.resource("dynamodb")
 
     def add_item(self, table, **kwargs):
+        print(kwargs["Item"])
         table = self.resource.Table(os.environ[table])
         table.put_item(**kwargs)
 
