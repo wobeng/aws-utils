@@ -1,6 +1,6 @@
 import boto3
 import os
-from helper import misc
+from py_helper import misc
 
 from aws_cognito import Cognito
 from aws_dynamodb import Dynamodb
@@ -18,7 +18,7 @@ class Aws:
             import instance
             profile_name = instance.PROFILE
             region_name = instance.REGION
-        except BaseException as e:
+        except BaseException:
             pass
 
         if session:
@@ -43,7 +43,7 @@ class Aws:
             import instance
             bucket = instance.CONFIG_BUCKET
             key = instance.KEY
-        except BaseException as e:
+        except BaseException:
             pass
 
         config = self.aws_s3.get_json_object(bucket, key)

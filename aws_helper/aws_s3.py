@@ -3,7 +3,7 @@ from collections import OrderedDict
 from operator import itemgetter
 
 import os
-from helper import misc
+from py_helper import misc
 
 
 class S3:
@@ -27,11 +27,11 @@ class S3:
         self.client.download_file(bucket, key, output)
         return output
 
-    def generate_sign(self, bucket, key, size, conditions=None, secure=False, content_type_prefix = None):
+    def generate_sign(self, bucket, key, size, conditions=None, secure=False, content_type_prefix=None):
         if not conditions:
             conditions = list()
         if secure:
-            conditions.append({"x-amz-server-side-encryption" : "AES256"})
+            conditions.append({"x-amz-server-side-encryption": "AES256"})
         if content_type_prefix:
             conditions.append(["starts-with", "$Content-Type", content_type_prefix + "/"])
         conditions.append(["content-length-range", 1, size])
@@ -44,8 +44,8 @@ class S3:
             ExpiresIn=3600
         )
 
-    def cdn_find_and_replace(self, body, bucket, map):
-        cdn_map = self.get_json_object(bucket, map)
+    def cdn_find_and_replace(self, body, bucket, cdn_map):
+        cdn_map = self.get_json_object(bucket, cdn_map)
         fnr = {}
         for path in cdn_map:
             find_path = path
