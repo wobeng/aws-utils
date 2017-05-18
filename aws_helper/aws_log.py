@@ -48,7 +48,7 @@ class Log:
         except exceptions.ClientError as e:
             misc.process_exception(e)
             if e.response["Error"]["Code"] == "ResourceNotFoundException":
-                raise KeyError
+                raise KeyError()
 
     def put_log(self, message, log_id):
 
