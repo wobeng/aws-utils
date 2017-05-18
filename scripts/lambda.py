@@ -9,10 +9,9 @@ if os.path.isfile(CONFIG_FILE):
 
     config = dict(BRANCH=os.environ["BRANCH"], KEY=os.environ["KEY"], CONFIG_BUCKET=os.environ["CONFIG_BUCKET"])
 
-    command = "lambda-uploader " \
+    command = "{0}/venv/bin/lambda-uploader " \
               "-c={0}/_uploader/{1}.json " \
               "-s={2} " \
-              "--virtualenv={0}/venv " \
               "-k=lambda/lambda-uploader.zip " \
               "--variables='{3}'".format(os.environ["CODEBUILD_SRC_DIR"], os.environ["BRANCH"],
                                          os.environ["ZAPPA_BUCKET"], json.dumps(config))
