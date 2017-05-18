@@ -12,7 +12,7 @@ class S3:
 
     def get_object(self, bucket, key, **kwargs):
         response = self.client.get_object(Bucket=bucket, Key=key, **kwargs)
-        response = response['Body'].read()
+        response = response['Body'].read().decode('utf-8')
         return response
 
     def get_json_object(self, bucket, key, sort=False, **kwargs):
