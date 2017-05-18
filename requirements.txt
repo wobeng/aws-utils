@@ -1,4 +1,4 @@
 boto3
 requests_aws4auth
 requests
-git+https://git@github.com/wobeng/py-helper.git@master
+git+https://git@github.com/wobeng/py-helper.git@master#egg=py-helper
