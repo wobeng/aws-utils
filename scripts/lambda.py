@@ -12,7 +12,7 @@ if os.path.isfile(CONFIG_FILE):
     command = "lambda-uploader " \
               "-c={0}/_uploader/{1}.json " \
               "-s={2} " \
-              "--virtualenv={0}/venv" \
+              "--virtualenv={0}/venv " \
               "-k=lambda/lambda-uploader.zip " \
               "--variables='{3}'".format(os.environ["CODEBUILD_SRC_DIR"], os.environ["BRANCH"],
                                          os.environ["ZAPPA_BUCKET"], json.dumps(config))
