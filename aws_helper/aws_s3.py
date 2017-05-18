@@ -1,8 +1,8 @@
 import json
 from collections import OrderedDict
-from operator import itemgetter
 
 import os
+from operator import itemgetter
 from py_helper import misc
 
 

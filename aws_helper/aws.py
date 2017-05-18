@@ -2,12 +2,12 @@ import boto3
 import os
 from py_helper import misc
 
-from aws_cognito import Cognito
-from aws_dynamodb import Dynamodb
-from aws_gateway import Gateway
-from aws_lambda import Lambda
-from aws_log import Log
-from aws_s3 import S3
+from .aws_cognito import Cognito
+from .aws_dynamodb import Dynamodb
+from .aws_gateway import Gateway
+from .aws_lambda import Lambda
+from .aws_log import Log
+from .aws_s3 import S3
 
 
 class Aws:

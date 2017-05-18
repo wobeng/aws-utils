@@ -43,7 +43,7 @@ class Dynamodb:
         key_exp = ""
         key_exp += '& '.join(Key('%s').eq('%s') % (key, val) for (key, val) in key.iteritems())
         table = self.resource.Table(os.environ[table])
-        response = table.query(KeyConditionExpression=key_exp **kwargs)
+        response = table.query(KeyConditionExpression=key_exp, **kwargs)
         if "Items" in response and response["Items"]:
             return response["Items"]
 

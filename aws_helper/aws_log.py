@@ -85,10 +85,10 @@ class Log:
             except exceptions.ClientError as e:
                 misc.process_exception(e)
                 if e.response["Error"]["Code"] == "ResourceNotFoundException":
-                    if "log stream" in e.message:
+                    if "log stream" in e.response["Error"]["Message"]:
                         self.client.create_log_stream(logGroupName=self._log_group_name,
                                                       logStreamName=log_stream)
-                    elif "log group" in e.message:
+                    elif "log group" in e.response["Error"]["Message"]:
                         self.client.create_log_group(logGroupName=self._log_group_name)
                     else:
                         break
