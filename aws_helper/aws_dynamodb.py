@@ -40,7 +40,7 @@ class Dynamodb:
         return table.delete_item(Key=key, ReturnValues='ALL_OLD', **kwargs)
 
     def query(self, table, key, **kwargs):
-        keys = key.keys()
+        keys = [key.keys()]
         key_exp = Key(keys[0]).eq(key[keys[0]])
         if len > 2:
             key_exp = key_exp + ' & ' + Key(keys[1]).eq(key[keys[1]])
