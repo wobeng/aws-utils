@@ -40,8 +40,10 @@ class Dynamodb:
         return table.delete_item(Key=key, ReturnValues='ALL_OLD', **kwargs)
 
     def query(self, table, key, **kwargs):
-        key_exp = ""
-        key_exp += '& '.join(Key(key).eq(val) for (key, val) in key.items())
+        key_exp = []
+        for key, value in key.items:
+            key_exp.append(Key(key).eq(value))
+        key_exp = '& '.join(key_exp)
         table = self.resource.Table(os.environ[table])
         response = table.query(KeyConditionExpression=key_exp, **kwargs)
         if "Items" in response and response["Items"]:
