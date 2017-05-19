@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+which python
+which pip
+which pip3
 pip install virtualenv
 virtualenv -p `which python3` venv
 venv/bin/pip install --no-cache-dir -r requirements.txt
