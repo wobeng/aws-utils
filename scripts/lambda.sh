@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+apt-get -y install zip
 pip install lambda-uploader
 pip install -r requirements.txt -t .
 zip -r lambda_function.zip .
