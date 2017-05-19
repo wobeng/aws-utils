@@ -41,7 +41,7 @@ class Dynamodb:
 
     def query(self, table, key, **kwargs):
         key_exp = ""
-        key_exp += '& '.join(Key('%s').eq('%s') % (key, val) for (key, val) in key.items())
+        key_exp += '& '.join(Key('%s').eq('%s') % (key, val) for (key, val) in list(key.items()))
         table = self.resource.Table(os.environ[table])
         response = table.query(KeyConditionExpression=key_exp, **kwargs)
         if "Items" in response and response["Items"]:
@@ -62,7 +62,7 @@ class Dynamodb:
                 updates[f] = placeholder
                 counter += 1
             exp += 'SET '
-            exp += ', '.join("%s=%s" % (key, val) for (key, val) in updates.items())
+            exp += ', '.join("%s=%s" % (key, val) for (key, val) in list(updates.items()))
             exp += ' '
         if deletes:
             for index, value in enumerate(deletes):
