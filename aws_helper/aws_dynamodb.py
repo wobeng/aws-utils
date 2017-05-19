@@ -41,7 +41,7 @@ class Dynamodb:
 
     def query(self, table, key, **kwargs):
         key_exp = []
-        for key, value in key.items:
+        for key, value in key.items():
             key_exp.append(Key(key).eq(value))
         key_exp = '& '.join(key_exp)
         table = self.resource.Table(os.environ[table])
