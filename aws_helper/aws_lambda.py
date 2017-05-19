@@ -11,6 +11,6 @@ class Lambda:
             Payload=json.dumps(payload)
         )
         if response["StatusCode"] != 200 or "FunctionError" in response:
-            response["Payload"] = response["Payload"].read()
+            response["Payload"] = response["Payload"].read().decode('utf-8')
             raise BaseException(response)
-        return json.loads(response["Payload"].read())
+        return json.loads(response["Payload"].read().decode('utf-8'))
