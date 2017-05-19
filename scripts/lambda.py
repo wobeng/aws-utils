@@ -9,7 +9,7 @@ if os.path.isfile(CONFIG_FILE):
 
     config = dict(BRANCH=os.environ["BRANCH"], KEY=os.environ["KEY"], CONFIG_BUCKET=os.environ["CONFIG_BUCKET"])
 
-    command = "{0}/venv/bin/lambda-uploader " \
+    command = "lambda-uploader --no-build " \
               "-c={0}/_uploader/{1}.json " \
               "-s={2} " \
               "-k=lambda/lambda-uploader.zip " \
