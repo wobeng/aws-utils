@@ -52,5 +52,11 @@ setup(
     keywords='aws helper',
     packages=find_packages(),
     version=_lu_meta['version'],
-    cmdclass={'install': MyInstall},
+    install_requires=[
+        'boto3',
+        'requests_aws4auth',
+        'requests'
+    ],
+    dependency_links=['git+https://git@github.com/wobeng/py-helper.git@master']
+    #cmdclass={'install': MyInstall},
 )
