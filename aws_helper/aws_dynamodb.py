@@ -21,7 +21,6 @@ class Dynamodb:
         table = self.resource.Table(os.environ[table])
         return table.put_item(Item=item, ReturnValues='ALL_OLD', **kwargs)
 
-
     def post_item(self, table, item, **kwargs):
         item["created_on"] = datetime.datetime.utcnow().isoformat()
         return self.add_item(table, item=item, **kwargs)
