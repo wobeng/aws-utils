@@ -19,7 +19,9 @@ class Dynamodb:
     def add_item(self, table, item, **kwargs):
         item = self.datetime_string(item)
         table = self.resource.Table(os.environ[table])
-        return table.put_item(Item=item, ReturnValues='ALL_OLD', **kwargs)['Attributes']
+        output = table.put_item(Item=item, ReturnValues='ALL_OLD', **kwargs)
+        print(output)
+        return output['Attributes']
 
     def post_item(self, table, item, **kwargs):
         item["created_on"] = datetime.datetime.utcnow().isoformat()
@@ -27,7 +29,7 @@ class Dynamodb:
 
     def put_item(self, table, item, **kwargs):
         item["updated_on"] = datetime.datetime.utcnow().isoformat()
-        return self.add_item(table, item=item ** kwargs)
+        return self.add_item(table, item=item **kwargs)
 
     def get_item(self, table, key, **kwargs):
         table = self.resource.Table(os.environ[table])
