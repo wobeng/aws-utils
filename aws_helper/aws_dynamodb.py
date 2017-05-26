@@ -77,14 +77,16 @@ class Dynamodb:
             exp += ' '
         if deletes:
             for index, value in enumerate(deletes):
-                val_placeholder = ':val' + str(counter)
-                values[val_placeholder] = value
-                deletes[index] = val_placeholder
+                attr_placeholder = '#attr' + str(counter)
+                names[attr_placeholder] = value
+                deletes[index] = attr_placeholder
                 counter += 1
             exp += 'REMOVE '
             exp += ', '.join(deletes)
             exp += ' '
         table = self.resource.Table(os.environ[table])
         print(exp)
+        print(names)
+        print(values)
         return table.update_item(Key=key, ReturnValues='ALL_NEW', UpdateExpression=exp, ExpressionAttributeNames=names,
                                  ExpressionAttributeValues=values, **kwargs)
