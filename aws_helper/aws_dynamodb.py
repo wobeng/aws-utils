@@ -60,18 +60,25 @@ class Dynamodb:
         updates["updated_on"] = datetime.datetime.utcnow().isoformat()
         if updates:
             for f in dict(updates):
-                placeholder = ':val' + str(counter)
-                values[placeholder] = updates[f]
-                updates[f] = placeholder
+                attr_placeholder = ':attr' + str(counter)
+                val_placeholder = ':val' + str(counter)
+                # replace key and val with placeholder
+                updates[attr_placeholder] = val_placeholder
+                # set placeholders value
+                values[attr_placeholder] = f
+                values[val_placeholder] = updates[f]
+                # delete original key and val
+                del updates[f]
+
                 counter += 1
             exp += 'SET '
             exp += ', '.join("{}={}".format(key, val) for (key, val) in updates.items())
             exp += ' '
         if deletes:
             for index, value in enumerate(deletes):
-                placeholder = ':val' + str(counter)
-                values[placeholder] = value
-                deletes[index] = placeholder
+                val_placeholder = ':val' + str(counter)
+                values[val_placeholder] = value
+                deletes[index] = val_placeholder
                 counter += 1
             exp += 'REMOVE '
             exp += ', '.join(deletes)
