@@ -27,7 +27,7 @@ class Dynamodb:
 
     def put_item(self, table, item, **kwargs):
         item["updated_on"] = datetime.datetime.utcnow().isoformat()
-        return self.add_item(table, item=item **kwargs)
+        return self.add_item(table, item=item ** kwargs)
 
     def get_item(self, table, key, **kwargs):
         table = self.resource.Table(os.environ[table])
@@ -53,6 +53,7 @@ class Dynamodb:
     def update_item(self, table, key, updates=None, deletes=None, **kwargs):
         exp = ""
         counter = 1
+        names = {}
         values = {}
         updates = updates or {}
         deletes = deletes or []
@@ -60,12 +61,12 @@ class Dynamodb:
         updates["updated_on"] = datetime.datetime.utcnow().isoformat()
         if updates:
             for f in dict(updates):
-                attr_placeholder = ':attr' + str(counter)
+                attr_placeholder = '#attr' + str(counter)
                 val_placeholder = ':val' + str(counter)
                 # replace key and val with placeholder
                 updates[attr_placeholder] = val_placeholder
-                # set placeholders value
-                values[attr_placeholder] = f
+                # set placeholders in name and value
+                names[attr_placeholder] = f
                 values[val_placeholder] = updates[f]
                 # delete original key and val
                 del updates[f]
@@ -84,5 +85,5 @@ class Dynamodb:
             exp += ', '.join(deletes)
             exp += ' '
         table = self.resource.Table(os.environ[table])
-        return table.update_item(Key=key, ReturnValues='ALL_NEW', UpdateExpression=exp,
+        return table.update_item(Key=key, ReturnValues='ALL_NEW', UpdateExpression=exp, ExpressionAttributeNames=names,
                                  ExpressionAttributeValues=values, **kwargs)
