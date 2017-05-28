@@ -17,7 +17,7 @@ class Dynamodb:
         return item
 
     @staticmethod
-    def projection_string(**kwargs):
+    def projection_string(kwargs):
         if 'ProjectionExpression' in kwargs:
             names = {}
             counter = 1
