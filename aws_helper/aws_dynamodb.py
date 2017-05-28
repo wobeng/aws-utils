@@ -30,6 +30,23 @@ class Dynamodb:
         return self.add_item(table, item=item ** kwargs)
 
     def get_item(self, table, key, **kwargs):
+        if 'ProjectionExpression' in kwargs:
+            names = {}
+            counter = 1
+            attributes = kwargs['ProjectionExpression'].split(',')
+            for a_index,attribute in enumerate(attributes):
+                sub_attributes= attribute.split('.')
+                for sa_index,sub_attribute in enumerate(sub_attributes):
+                    place_holder = '#attr' + str(counter)
+                    names[place_holder] = sub_attribute
+                    sub_attributes[sa_index] = place_holder
+                    counter += 1
+                attribute = '.'.join(sub_attributes)
+                attributes[a_index] = attribute
+            kwargs['ProjectionExpression'] = ','.join(attributes)
+            kwargs['ExpressionAttributeNames'] = names
+        print(kwargs['ProjectionExpression'] )
+        print(kwargs['ExpressionAttributeNames'])
         table = self.resource.Table(os.environ[table])
         response = table.get_item(Key=key, ConsistentRead=True, **kwargs)
         if "Item" in response and response["Item"]:
