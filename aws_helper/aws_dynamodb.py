@@ -38,7 +38,8 @@ class Dynamodb:
     def add_item(self, table, item, **kwargs):
         item = self.datetime_string(item)
         table = self.resource.Table(os.environ[table])
-        return table.put_item(Item=item, ReturnValues='ALL_OLD', **kwargs)
+        table.put_item(Item=item, **kwargs)
+        return item
 
     def post_item(self, table, item, **kwargs):
         item["created_on"] = datetime.datetime.utcnow().isoformat()
@@ -57,7 +58,8 @@ class Dynamodb:
 
     def delete_item(self, table, key, **kwargs):
         table = self.resource.Table(os.environ[table])
-        return table.delete_item(Key=key, ReturnValues='ALL_OLD', **kwargs)
+        table.delete_item(Key=key, **kwargs)
+        return key
 
     def query(self, table, key, **kwargs):
         kwargs = self.projection_string(kwargs)
@@ -91,7 +93,6 @@ class Dynamodb:
                 values[val_placeholder] = updates[f]
                 # delete original key and val
                 del updates[f]
-
                 counter += 1
             exp += 'SET '
             exp += ', '.join("{}={}".format(key, val) for (key, val) in updates.items())
@@ -106,5 +107,6 @@ class Dynamodb:
             exp += ', '.join(deletes)
             exp += ' '
         table = self.resource.Table(os.environ[table])
-        return table.update_item(Key=key, ReturnValues='ALL_NEW', UpdateExpression=exp, ExpressionAttributeNames=names,
-                                 ExpressionAttributeValues=values, **kwargs)
+        table.update_item(Key=key, UpdateExpression=exp, ExpressionAttributeNames=names,
+                          ExpressionAttributeValues=values, **kwargs)
+        return key
