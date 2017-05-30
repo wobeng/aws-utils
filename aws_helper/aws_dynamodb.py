@@ -35,24 +35,25 @@ class Dynamodb:
             kwargs['ExpressionAttributeNames'] = names
         return kwargs
 
-    def add_item(self, table, item, **kwargs):
+    def add_item(self, table, key, item, **kwargs):
+        item.update(key)
         item = self.datetime_string(item)
         table = self.resource.Table(os.environ[table])
         table.put_item(Item=item, **kwargs)
-        return item
+        return key
 
-    def post_item(self, table, item, **kwargs):
+    def post_item(self, table,key, item, **kwargs):
         item["created_on"] = datetime.datetime.utcnow().isoformat()
-        return self.add_item(table, item=item, **kwargs)
+        return self.add_item(table, key, item=item, **kwargs)
 
-    def put_item(self, table, item, **kwargs):
+    def put_item(self, table, key, item, **kwargs):
         item["updated_on"] = datetime.datetime.utcnow().isoformat()
-        return self.add_item(table, item=item ** kwargs)
+        return self.add_item(table, key, item=item ** kwargs)
 
     def get_item(self, table, key, **kwargs):
         kwargs = self.projection_string(kwargs)
         table = self.resource.Table(os.environ[table])
-        response = table.get_item(Key=key, ConsistentRead=True, **kwargs)
+        response = table.get_item(Key=key, **kwargs)
         if "Item" in response and response["Item"]:
             return response["Item"]
 
