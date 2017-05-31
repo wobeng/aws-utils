@@ -10,13 +10,14 @@ class DynamoDb:
         self.client = session.client("dynamodb")
         self.resource = session.resource("dynamodb")
 
-    @staticmethod
-    def convert_types(item):
+    def convert_types(self, item):
         for k in dict(item):
             if isinstance(item[k], datetime.datetime):
                 item[k] = item[k].isoformat()
             elif isinstance(item[k], float):
                 item[k] = Decimal(item[k])
+            elif isinstance(item[k], dict):
+                item[k] = self.convert_types(item[k])
         return item
 
     @staticmethod
