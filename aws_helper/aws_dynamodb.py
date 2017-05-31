@@ -1,19 +1,22 @@
 import datetime
+from decimal import Decimal
 
 import os
 from boto3.dynamodb.conditions import Key
 
 
-class Dynamodb:
+class DynamoDb:
     def __init__(self, session):
         self.client = session.client("dynamodb")
         self.resource = session.resource("dynamodb")
 
     @staticmethod
-    def datetime_string(item):
+    def convert_types(item):
         for k in dict(item):
             if isinstance(item[k], datetime.datetime):
                 item[k] = item[k].isoformat()
+            elif isinstance(item[k], float):
+                item[k] = Decimal(item[k])
         return item
 
     @staticmethod
@@ -37,12 +40,12 @@ class Dynamodb:
 
     def add_item(self, table, key, item, **kwargs):
         item.update(key)
-        item = self.datetime_string(item)
+        item = self.convert_types(item)
         table = self.resource.Table(os.environ[table])
         table.put_item(Item=item, **kwargs)
         return key
 
-    def post_item(self, table,key, item, **kwargs):
+    def post_item(self, table, key, item, **kwargs):
         item["created_on"] = datetime.datetime.utcnow().isoformat()
         return self.add_item(table, key, item=item, **kwargs)
 
@@ -81,7 +84,7 @@ class Dynamodb:
         values = {}
         updates = updates or {}
         deletes = deletes or []
-        updates = self.datetime_string(updates)
+        updates = self.convert_types(updates)
         updates["updated_on"] = datetime.datetime.utcnow().isoformat()
         if updates:
             for f in dict(updates):

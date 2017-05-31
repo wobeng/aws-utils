@@ -3,7 +3,7 @@ import os
 from py_helper import misc
 
 from .aws_cognito import Cognito
-from .aws_dynamodb import Dynamodb
+from .aws_dynamodb import DynamoDb
 from .aws_gateway import Gateway
 from .aws_lambda import Lambda
 from .aws_log import Log
@@ -30,7 +30,7 @@ class Aws:
         self.aws_lambda = Lambda(self.session)
         self.aws_log = Log(self.session)
         self.aws_s3 = S3(self.session)
-        self.aws_dynamodb = Dynamodb(self.session)
+        self.aws_dynamodb = DynamoDb(self.session)
         self.aws_cognito = Cognito(self.session)
 
     def load_config(self, bucket=None, key=None):
