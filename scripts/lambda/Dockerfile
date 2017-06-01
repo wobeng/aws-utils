@@ -20,14 +20,14 @@ RUN python3.6 get-pip.py
 RUN pip3.6 install lambda-uploader
 
 # Install requirement
-RUN pip3.6 install -r requirements.txt -t .
+CMD pip3.6 install -r requirements.txt -t .
 
 # zip file
-RUN zip -q -r lambda_function.zip .
+CMD zip -q -r lambda_function.zip .
 
 # get lambda python script
-RUN wget $SCRIPT_URL/scripts/lambda.py
-RUN chmod u+x lambda.py
+CMD wget $SCRIPT_URL/scripts/lambda.py
+CMD chmod u+x lambda.py
 
 # run lambda python script
-RUN python3.6 lambda.py
+CMD python3.6 lambda.py
