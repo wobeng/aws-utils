@@ -2,7 +2,7 @@ FROM ubuntu:16.10
 
 # Install dependencies
 RUN apt-get update -y
-RUN apt-get install -y  ffmpeg unoconv python3.6 python3.6-dev python3.6-venv
+RUN apt-get install -y  ffmpeg unoconv python3.6 python3.6-dev python3.6-venv wget
 
 # Install pip
 RUN wget https://bootstrap.pypa.io/get-pip.py
