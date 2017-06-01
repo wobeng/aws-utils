@@ -19,7 +19,7 @@ RUN python3.6 get-pip.py
 RUN pip3.6 install lambda-uploader
 
 # Set the working directory to /app
-WORKDIR $CODEBUILD_SRC_DIR
+CMD cd $CODEBUILD_SRC_DIR
 
 # Install requirement
 CMD pip3.6 install -r requirements.txt -t .
