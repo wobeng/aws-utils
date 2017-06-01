@@ -10,7 +10,6 @@ RUN wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz
 RUN tar xzf Python-3.6.0.tgz
 RUN cd Python-3.6.0 && ./configure && make altinstall
 RUN rm Python-3.6.0.tgz
-RUN cd $CODEBUILD_SRC_DIR
 
 # Install pip
 RUN wget https://bootstrap.pypa.io/get-pip.py
@@ -18,6 +17,9 @@ RUN python3.6 get-pip.py
 
 # Install lambda-uploader
 RUN pip3.6 install lambda-uploader
+
+# Set the working directory to /app
+WORKDIR $CODEBUILD_SRC_DIR
 
 # Install requirement
 CMD pip3.6 install -r requirements.txt -t .
