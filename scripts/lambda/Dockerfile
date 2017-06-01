@@ -2,7 +2,7 @@ FROM amazonlinux
 
 # Install dependencies
 RUN yum update -y
-RUN yum install -y gcc wget
+RUN yum install -y gcc make wget
 
 # Install python
 RUN cd /usr/src
