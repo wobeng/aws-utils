@@ -17,10 +17,10 @@ RUN wget https://bootstrap.pypa.io/get-pip.py
 RUN python3.6 get-pip.py
 
 # Install lambda-uploader
-RUN pip install lambda-uploader
+RUN pip3.6 install lambda-uploader
 
 # Install requirement
-RUN pip install -r requirements.txt -t .
+RUN pip3.6 install -r requirements.txt -t .
 
 # zip file
 RUN zip -q -r lambda_function.zip .
@@ -30,4 +30,4 @@ RUN wget $SCRIPT_URL/scripts/lambda.py
 RUN chmod u+x lambda.py
 
 # run lambda python script
-RUN python lambda.py
+RUN python3.6 lambda.py
