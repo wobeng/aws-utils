@@ -2,7 +2,7 @@ FROM amazonlinux
 
 # Install dependencies
 RUN yum update -y
-RUN yum install -y gcc make wget yum-utils groupinstall development
+RUN yum install -y gcc make wget yum-utils groupinstall development zlib-devel
 
 # Install python
 RUN cd /usr/src
