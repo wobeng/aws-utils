@@ -8,9 +8,7 @@ RUN yum install -y gcc make wget yum-utils groupinstall development
 RUN cd /usr/src
 RUN wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz
 RUN tar xzf Python-3.6.0.tgz
-RUN cd Python-3.6.0
-RUN ./configure
-RUN make altinstall
+RUN cd Python-3.6.0 && ./configure && make altinstall
 RUN rm Python-3.6.0.tgz
 RUN cd $CODEBUILD_SRC_DIR
 
