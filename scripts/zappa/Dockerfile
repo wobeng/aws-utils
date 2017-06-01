@@ -15,21 +15,21 @@ RUN rm Python-3.6.0.tgz
 RUN wget https://bootstrap.pypa.io/get-pip.py
 RUN python3.6 get-pip.py
 
-# Install lambda-uploader
-RUN pip3.6 install lambda-uploader
+# Install virtualenv
+RUN pip install virtualenv
 
 # Set the working directory
 CMD cd $CODEBUILD_SRC_DIR
 
-# Install requirement
-CMD pip3.6 install -r requirements.txt -t .
+# Create venv
+CMD  virtualenv -p python3.6 venv
 
-# Zip file
-CMD zip -q -r lambda_function.zip .
+# Install requirement
+CMD venv/bin/pip install -r requirements.txt
 
 # Get lambda python script
-CMD wget $SCRIPT_URL/scripts/lambda.py
-CMD chmod u+x lambda.py
+CMD wget $SCRIPT_URL/scripts/zappa.py
+CMD chmod u+x zappa.py
 
 # Run lambda python script
-CMD python3.6 lambda.py
+CMD venv/bin/python zappa.py
