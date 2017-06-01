@@ -1,8 +1,6 @@
-FROM ubuntu:latest
+FROM ubuntu:16.10
 
 # Install dependencies
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository ppa:jonathonf/python-3.6
 RUN apt-get update -y
 RUN apt-get install -y  ffmpeg unoconv python3.6
 
