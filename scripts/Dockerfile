@@ -10,6 +10,9 @@ RUN apt-get install -y  python3.6 python3.6-dev python3.6-venv wget
 RUN wget https://bootstrap.pypa.io/get-pip.py
 RUN python3.6 get-pip.py
 
+# Install imagemagick
+RUN apt-get install -y imagemagick
+
 # Install ffmpeg
 RUN apt-get install -y  ffmpeg
 
