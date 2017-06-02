@@ -35,7 +35,7 @@ if os.path.isfile(config_file):
     config = dict(BRANCH=os.environ['BRANCH'], KEY=os.environ['KEY'], CONFIG_BUCKET=os.environ['CONFIG_BUCKET'])
 
     execute(
-        'lambda-uploader'
+        '/usr/local/bin/lambda-uploader'
         ' --no-build -c={} '
         '-s={} -k=lambda/lambda-uploader.zip '
         '--variables=\"{}\"'.format(config_file, os.environ['ZAPPA_BUCKET'], json.dumps(config))
