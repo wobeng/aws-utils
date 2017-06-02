@@ -13,7 +13,7 @@ RUN rm Python-3.6.0.tgz
 
 # Install pip
 RUN wget https://bootstrap.pypa.io/get-pip.py
-RUN python3.6 get-pip.py
+RUN python get-pip.py
 
 # Install lambda-uploader
 RUN pip install lambda-uploader
