@@ -16,4 +16,4 @@ RUN wget https://bootstrap.pypa.io/get-pip.py
 RUN python3.6 get-pip.py
 
 # Install lambda-uploader
-RUN pip3.6 install lambda-uploader
+RUN pip install lambda-uploader

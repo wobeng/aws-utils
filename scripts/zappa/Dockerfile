@@ -16,4 +16,4 @@ RUN wget https://bootstrap.pypa.io/get-pip.py
 RUN python3.6 get-pip.py
 
 # Install virtualenv
-RUN pip3.6 install virtualenv
+RUN pip install virtualenv
