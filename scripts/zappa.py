@@ -44,7 +44,7 @@ for stage in stages:
     time.sleep(30)
 
     logger.info('Trying to update zappa')
-    stage_update = '. {}; zappa update {}'.format(absolute('venv/bin/activate'),stage)
+    stage_update = '. {}; zappa update {}'.format(absolute('venv/bin/activate'), stage)
     logger.debug(stage_update)
     code = subprocess.call(stage_update, shell=True)
     log_code(code)
