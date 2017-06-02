@@ -1,4 +1,3 @@
-#!/usr/bin/env python3.6
 import json
 import logging
 import subprocess
