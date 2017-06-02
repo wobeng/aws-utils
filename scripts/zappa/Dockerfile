@@ -17,19 +17,3 @@ RUN python3.6 get-pip.py
 
 # Install virtualenv
 RUN pip3.6 install virtualenv
-
-# Set the working directory
-CMD cd $CODEBUILD_SRC_DIR
-
-# Create venv
-CMD  virtualenv -p python3.6 venv
-
-# Install requirement
-CMD venv/bin/pip install -r requirements.txt
-
-# Get lambda python script
-CMD wget $SCRIPT_URL/scripts/zappa.py
-CMD chmod u+x zappa.py
-
-# Run lambda python script
-CMD venv/bin/python zappa.py

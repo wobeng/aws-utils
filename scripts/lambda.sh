@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
-sudo apt-get update && apt-get -y install zip
-pip install --upgrade pip && pip install lambda-uploader && pip install -r requirements.txt -t .
-zip -q -r lambda_function.zip .
-wget -O ./lambda.py $SCRIPT_URL/scripts/lambda.py
-chmod u+x lambda.py && python lambda.py
 
+# Set the working directory
+cd $CODEBUILD_SRC_DIR
+
+# Install requirement
+pip3.6 install -r requirements.txt -t .
+
+# Zip file
+zip -q -r lambda_function.zip .
+
+# Get lambda python script
+wget $SCRIPT_URL/scripts/lambda.py
+chmod u+x lambda.py
+
+# Run lambda python script
+python3.6 lambda.py

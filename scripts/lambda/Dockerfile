@@ -17,19 +17,3 @@ RUN python3.6 get-pip.py
 
 # Install lambda-uploader
 RUN pip3.6 install lambda-uploader
-
-# Set the working directory
-CMD cd $CODEBUILD_SRC_DIR
-
-# Install requirement
-CMD pip3.6 install -r requirements.txt -t .
-
-# Zip file
-CMD zip -q -r lambda_function.zip .
-
-# Get lambda python script
-CMD wget $SCRIPT_URL/scripts/lambda.py
-CMD chmod u+x lambda.py
-
-# Run lambda python script
-CMD python3.6 lambda.py
