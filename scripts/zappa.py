@@ -15,7 +15,7 @@ def absolute(p):
 
 
 def log_code(c):
-    logger.debug('CODE ==> ' + str(c))
+    logger.info('CODE ==> ' + str(c))
 
 
 logger.info('Creating environment')
