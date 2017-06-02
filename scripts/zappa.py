@@ -23,7 +23,7 @@ code = subprocess.call('virtualenv -p python3.6 {}'.format(absolute('venv')), sh
 log_code(code)
 
 logger.info('Install requirement')
-code = subprocess.call('{} -r {}'.format(absolute('venv/bin/pip'), absolute('requirements.txt')), shell=True)
+code = subprocess.call('{} install -r {}'.format(absolute('venv/bin/pip'), absolute('requirements.txt')), shell=True)
 log_code(code)
 
 stages = []

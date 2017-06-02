@@ -18,7 +18,7 @@ def log_code(c):
 
 
 logger.info('Install requirement')
-code = subprocess.call('pip3.6 -r {} -t {}'.format(absolute('requirements.txt'), absolute('')),
+code = subprocess.call('pip3.6 install -r {} -t {}'.format(absolute('requirements.txt'), absolute('')),
                        shell=True)
 log_code(code)
 
