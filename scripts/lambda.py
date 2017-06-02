@@ -17,6 +17,7 @@ def execute(c):
     logger.info('COMMAND ==> ' + c)
     c = subprocess.call(c, shell=True)
     logger.info('CODE ==> ' + str(c))
+    return c
 
 
 logger.info('Install requirement')

@@ -14,17 +14,18 @@ def absolute(p):
     return os.path.join(os.environ['CODEBUILD_SRC_DIR'], p)
 
 
-def log_code(c):
+def execute(c):
+    logger.info('COMMAND ==> ' + c)
+    c = subprocess.call(c, shell=True)
     logger.info('CODE ==> ' + str(c))
+    return c
 
 
 logger.info('Creating environment')
-code = subprocess.call('virtualenv -p python3.6 {}'.format(absolute('venv')), shell=True)
-log_code(code)
+execute('virtualenv -p python3.6 {}'.format(absolute('venv')))
 
 logger.info('Install requirement')
-code = subprocess.call('{} install -r {}'.format(absolute('venv/bin/pip'), absolute('requirements.txt')), shell=True)
-log_code(code)
+execute('{} install -r {}'.format(absolute('venv/bin/pip'), absolute('requirements.txt')))
 
 stages = []
 
@@ -44,17 +45,11 @@ for stage in stages:
     time.sleep(30)
 
     logger.info('Trying to update zappa')
-    stage_update = '. {}; zappa update {}'.format(absolute('venv/bin/activate'), stage)
-    logger.debug(stage_update)
-    code = subprocess.call(stage_update, shell=True)
-    log_code(code)
+    code = execute('. {}; zappa update {}'.format(absolute('venv/bin/activate'), stage))
 
     if code != 0:
         logger.info('Update to zappa failed. Trying to deploy zappa')
-        stage_deploy = '. {}; zappa deploy {}'.format(absolute('venv/bin/activate'), stage)
-        logger.debug(stage_deploy)
-        code = subprocess.call(stage_deploy, shell=True)
-        log_code(code)
+        code = execute('. {}; zappa deploy {}'.format(absolute('venv/bin/activate'), stage))
 
         if code != 0:
             logger.debug('{} update or deploy not found!'.format(stage.capitalize()))
