@@ -15,7 +15,7 @@ def absolute(p):
 
 def execute(c):
     logger.info('COMMAND ==> ' + c)
-    c = subprocess.call(c, shell=True)
+    c = subprocess.call(c, shell=True,  executable='/bin/bash')
     logger.info('CODE ==> ' + str(c))
     return c
 
