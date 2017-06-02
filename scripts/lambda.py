@@ -38,7 +38,7 @@ if os.path.isfile(config_file):
         'lambda-uploader'
         ' --no-build -c={} '
         '-s={} -k=lambda/lambda-uploader.zip '
-        '--variables="{}'''.format(config_file, os.environ['ZAPPA_BUCKET'], json.dumps(config))
+        '--variables=\"{}\"'.format(config_file, os.environ['ZAPPA_BUCKET'], json.dumps(config))
     )
 
 else:
