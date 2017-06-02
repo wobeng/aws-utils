@@ -13,18 +13,17 @@ def absolute(p):
     return os.path.join(os.environ['CODEBUILD_SRC_DIR'], p)
 
 
-def log_code(c):
+def execute(c):
+    logger.info('COMMAND ==> ' + c)
+    c = subprocess.call(c, shell=True)
     logger.info('CODE ==> ' + str(c))
 
 
 logger.info('Install requirement')
-code = subprocess.call('pip3.6 install -r {} -t {}'.format(absolute('requirements.txt'), absolute('')),
-                       shell=True)
-log_code(code)
+execute('pip3.6 install -r {} -t {}'.format(absolute('requirements.txt'), absolute('')))
 
 logger.info('Zipping...')
-code = subprocess.call('zip -q -r lambda_function.zip {}'.format(absolute('')), shell=True)
-log_code(code)
+execute('zip -q -r lambda_function.zip {}'.format(absolute('')))
 
 config_file = absolute('_uploader/{}.json'.format(os.environ['BRANCH']))
 
@@ -34,11 +33,12 @@ if os.path.isfile(config_file):
 
     config = dict(BRANCH=os.environ['BRANCH'], KEY=os.environ['KEY'], CONFIG_BUCKET=os.environ['CONFIG_BUCKET'])
 
-    command = 'lambda-uploader --no-build -c={} -s={} -k=lambda/lambda-uploader.zip --variables="{}'''.format(
-        config_file, os.environ['ZAPPA_BUCKET'], json.dumps(config))
-    logger.debug(command)
-    code = subprocess.call(command, shell=True)
-else:
-    code = subprocess.call('No {}.json found!'.format(os.environ['BRANCH']), shell=True)
+    execute(
+        'lambda-uploader'
+        ' --no-build -c={} '
+        '-s={} -k=lambda/lambda-uploader.zip '
+        '--variables="{}'''.format(config_file, os.environ['ZAPPA_BUCKET'], json.dumps(config))
+    )
 
-log_code(code)
+else:
+    execute('No {}.json found!'.format(os.environ['BRANCH']))
