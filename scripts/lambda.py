@@ -19,7 +19,7 @@ def execute(c):
     return c
 
 
-logger.info('Install requirement')
+logger.info('Installing requirement...')
 execute('pip3.6 install -r {} -t {}'.format(absolute('requirements.txt'), os.environ['CODEBUILD_SRC_DIR']))
 
 logger.info('Zipping...')
@@ -29,7 +29,7 @@ config_file = absolute('_uploader/{}.json'.format(os.environ['BRANCH']))
 
 if os.path.isfile(config_file):
 
-    logger.info('Starting {}'.format(os.environ['BRANCH'].capitalize()))
+    logger.info('Starting {}...'.format(os.environ['BRANCH'].capitalize()))
 
     config = dict(BRANCH=os.environ['BRANCH'], KEY=os.environ['KEY'], CONFIG_BUCKET=os.environ['CONFIG_BUCKET'])
 

@@ -20,11 +20,8 @@ def execute(c):
     return c
 
 
-logger.info('Creating environment')
-execute('virtualenv -p python3.6 {}'.format(absolute('venv')))
-
-logger.info('Install requirement')
-execute('{} install -r {}'.format(absolute('venv/bin/pip'), absolute('requirements.txt')))
+logger.info('Install requirement...')
+execute('{} install -r {}'.format('/tmp/venv3/bin/pip', absolute('requirements.txt')))
 
 stages = []
 
@@ -40,15 +37,15 @@ for stage in stages:
     if os.environ['BRANCH'] != 'master':
         stage = stage + '_' + os.environ['BRANCH']
 
-    logger.info('Sleeping for 30 seconds')
+    logger.info('Sleeping for 30 seconds...')
     time.sleep(30)
 
-    logger.info('Trying to update zappa')
-    code = execute('. {}; zappa update {}'.format(absolute('venv/bin/activate'), stage))
+    logger.info('Trying to update zappa...')
+    code = execute('. {}; zappa update {}'.format('/tmp/venv3/bin/activate', stage))
 
     if code != 0:
-        logger.info('Update to zappa failed. Trying to deploy zappa')
-        code = execute('. {}; zappa deploy {}'.format(absolute('venv/bin/activate'), stage))
+        logger.info('Update to zappa failed. Trying to deploy zappa...')
+        code = execute('. {}; zappa deploy {}'.format('/tmp/venv3/bin/activate', stage))
 
         if code != 0:
-            logger.debug('{} update or deploy not found!'.format(stage.capitalize()))
+            logger.info('{} update or deploy not found!'.format(stage.capitalize()))
