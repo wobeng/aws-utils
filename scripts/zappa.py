@@ -1,4 +1,3 @@
-# encoding: utf-8
 import json
 import logging
 import subprocess
@@ -22,7 +21,7 @@ def execute(c):
 
 
 logger.info('Install requirement...')
-execute('pip3.6 install -r {}'.format(absolute('requirements.txt')))
+execute('{} install -r {}'.format('/tmp/venv3/bin/pip', absolute('requirements.txt')))
 
 stages = []
 
