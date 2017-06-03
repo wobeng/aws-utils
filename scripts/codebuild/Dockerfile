@@ -37,3 +37,7 @@ RUN virtualenv -p python3.6 /tmp/venv3
 # Activate npm
 RUN npm install -g grunt-cli
 RUN npm config set strict-ssl false
+
+# Set Locale
+RUN echo 'LC_ALL=en_US.UTF-8' | sudo tee -a /etc/environment
+RUN echo 'LANG=en_US.UTF-8' | sudo tee -a /etc/environment
