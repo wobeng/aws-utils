@@ -22,7 +22,7 @@ def execute(c):
 
 
 logger.info('Install requirement...')
-execute('pip install -r {}'.format(absolute('requirements.txt')))
+execute('pip3.6 install -r {}'.format(absolute('requirements.txt')))
 
 stages = []
 
