@@ -1,9 +1,9 @@
 FROM amazonlinux
 
 # Install dependencies
+RUN yum-config-manager --enable epel
 RUN yum update -y
-RUN yum install -y gcc make wget yum-utils groupinstall development zlib-devel openssl-devel git zip which
-RUN yum install nodejs npm --enablerepo=epel
+RUN yum install -y gcc make wget yum-utils groupinstall development zlib-devel openssl-devel git zip which nodejs npm
 
 # Install python
 RUN cd /usr/src
