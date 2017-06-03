@@ -23,7 +23,7 @@ logger.info('Installing requirement...')
 execute('pip3.6 install -r {} -t {}'.format(absolute('requirements.txt'), os.environ['CODEBUILD_SRC_DIR']))
 
 logger.info('Zipping...')
-execute('zip -q -r lambda_function.zip ' + os.environ['CODEBUILD_SRC_DIR'])
+execute('zip -q -r -j lambda_function.zip {}' + os.environ['CODEBUILD_SRC_DIR'])
 
 config_file = absolute('_uploader/{}.json'.format(os.environ['BRANCH']))
 
