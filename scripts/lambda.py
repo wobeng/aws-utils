@@ -20,7 +20,7 @@ def execute(c):
 
 
 logger.info('Installing requirement...')
-execute('pip3.6 install -r {} -t {}'.format(absolute('requirements.txt'), absolute('app')))
+execute('pip3.6 install -r {} -t .'.format(absolute('requirements.txt')))
 
 logger.info('Zipping...')
 execute('zip -q -r lambda_function.zip .')
