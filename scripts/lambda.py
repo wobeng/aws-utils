@@ -20,10 +20,10 @@ def execute(c):
 
 
 logger.info('Installing requirement...')
-execute('pip3.6 install -r {} -t {}'.format(absolute('requirements.txt'), os.environ['CODEBUILD_SRC_DIR']))
+execute('pip3.6 install -r {} -t {}'.format(absolute('requirements.txt'), absolute('app')))
 
 logger.info('Zipping...')
-execute('zip -q -j -r lambda_function.zip {}'.format(os.environ['CODEBUILD_SRC_DIR']))
+execute('zip -q -r lambda_function.zip .')
 
 config_file = absolute('_uploader/{}.json'.format(os.environ['BRANCH']))
 
