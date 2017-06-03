@@ -41,11 +41,11 @@ for stage in stages:
     time.sleep(30)
 
     logger.info('Trying to update zappa...')
-    code = execute('. {}; zappa update {}'.format('/tmp/venv3/bin/activate', stage))
+    code = execute('.{}; zappa update {}'.format('/tmp/venv3/bin/activate', stage))
 
     if code != 0:
         logger.info('Update to zappa failed. Trying to deploy zappa...')
-        code = execute('. {}; zappa deploy {}'.format('/tmp/venv3/bin/activate', stage))
+        code = execute('.{}; zappa deploy {}'.format('/tmp/venv3/bin/activate', stage))
 
         if code != 0:
             logger.info('{} update or deploy not found!'.format(stage.capitalize()))
