@@ -28,8 +28,6 @@ RUN pip install lambda-uploader
 
 # Install virtualenv
 RUN pip install virtualenv
-RUN virtualenv -p python /tmp/venv2
-RUN virtualenv -p python3.6 /tmp/venv3
 
 # Activate npm
 RUN npm install -g grunt-cli
