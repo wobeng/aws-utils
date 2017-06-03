@@ -20,11 +20,9 @@ def execute(c):
     logger.info('CODE ==> ' + str(c))
     return c
 
-logger.info('Install virtualenv...')
-execute('virtualenv -p python3.6 venv3')
 
 logger.info('Install requirement...')
-execute('. {}; pip install -r {}'.format(absolute('venv3/bin/activate'), absolute('requirements.txt')))
+execute('pip install -r {}'.format(absolute('requirements.txt')))
 
 stages = []
 
