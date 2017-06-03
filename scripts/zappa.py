@@ -21,7 +21,7 @@ def execute(c):
 
 
 logger.info('Install requirement...')
-execute('{} install -r {}'.format('/tmp/venv3/bin/pip', absolute('requirements.txt')))
+execute('. {}; pip install -r {}'.format('/tmp/venv3/bin/activate', absolute('requirements.txt')))
 
 stages = []
 
