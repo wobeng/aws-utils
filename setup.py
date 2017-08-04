@@ -44,7 +44,7 @@ class MyInstall(install):
 
 
 setup(
-    name='aws_utils',
+    name='aws-utils',
     description='aws utils',
     url=_lu_meta['url'],
     author='Welby Obeng',
