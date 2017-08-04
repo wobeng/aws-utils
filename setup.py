@@ -16,7 +16,7 @@ def package_meta():
     _url_re = re.compile(r'__url__\s+=\s+(.*)')
     _license_re = re.compile(r'__license__\s+=\s+(.*)')
 
-    with open('aws_helper/__init__.py', 'rb') as ffinit:
+    with open('aws_utils/__init__.py', 'rb') as ffinit:
         initcontent = ffinit.read()
         version = str(ast.literal_eval(_version_re.search(
             initcontent.decode('utf-8')).group(1)))
@@ -44,12 +44,12 @@ class MyInstall(install):
 
 
 setup(
-    name='aws-helper',
-    description='aws helper',
+    name='aws_utils',
+    description='aws utils',
     url=_lu_meta['url'],
     author='Welby Obeng',
     license=_lu_meta['license'],
-    keywords='aws helper',
+    keywords='aws utils',
     packages=find_packages(),
     version=_lu_meta['version'],
     cmdclass={'install': MyInstall},
@@ -58,5 +58,5 @@ setup(
         'requests_aws4auth',
         'requests'
     ],
-    dependency_links=['git+https://git@github.com/wobeng/py-helper.git@master']
+    dependency_links=['git+https://git@github.com/wobeng/py-utils.git@master']
 )

@@ -3,10 +3,10 @@ import time
 from datetime import datetime
 
 from botocore import exceptions
-from py_helper import dtime, misc
+from py_utils import dtime, misc
 
 
-class Log:
+class CloudWatch:
     def __init__(self, session):
         self.client = session.client("logs")
 
