@@ -6,7 +6,7 @@ from botocore import exceptions
 from py_utils import dtime, misc
 
 
-class CloudWatch:
+class Logs:
     def __init__(self, session):
         self.client = session.client("logs")
 

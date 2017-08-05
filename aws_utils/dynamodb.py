@@ -1,8 +1,9 @@
 import datetime
-from aws_utils.utils import convert_types,projection_string
 
 import os
 from boto3.dynamodb.conditions import Key
+
+from aws_utils.utils import convert_types, projection_string
 
 
 class DynamoDb:
