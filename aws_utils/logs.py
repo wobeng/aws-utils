@@ -1,7 +1,7 @@
 import json
 import time
 from datetime import datetime
-from boto3 import exceptions
+import botocore.exceptions
 from py_utils import dtime, misc
 
 
@@ -44,7 +44,7 @@ class Logs:
         try:
             response = self.client.filter_log_events(**flight)
             return response
-        except exceptions.ClientError as e:
+        except botocore.exceptions.ClientError as e:
             misc.process_exception(e)
             if e.response["Error"]["Code"] == "ResourceNotFoundException":
                 raise KeyError()
@@ -81,7 +81,7 @@ class Logs:
                 misc.process_exception(e)
                 self.client.create_log_stream(logGroupName=self._log_group_name,
                                               logStreamName=log_stream)
-            except exceptions.ClientError as e:
+            except botocore.exceptions.ClientError as e:
                 misc.process_exception(e)
                 if e.response["Error"]["Code"] == "ResourceNotFoundException":
                     if "log stream" in e.response["Error"]["Message"]:
