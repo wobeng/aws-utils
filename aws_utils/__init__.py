@@ -2,7 +2,6 @@ import json
 
 import boto3
 import os
-from aws_utils.cognito import Cognito
 from py_utils import misc
 
 from aws_utils.dynamodb import DynamoDb
