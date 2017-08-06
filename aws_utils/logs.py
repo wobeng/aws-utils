@@ -1,8 +1,7 @@
 import json
 import time
 from datetime import datetime
-
-from botocore import exceptions
+from boto3 import exceptions
 from py_utils import dtime, misc
 
 

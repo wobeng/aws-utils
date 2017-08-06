@@ -29,10 +29,8 @@ class Aws:
         except BaseException:
             pass
 
-        if session:
-            self.session = session
-        else:
-            self.session = boto3.session.Session(profile_name=profile_name, region_name=region_name)
+        self.client = None
+        self.session = session or boto3.session.Session(profile_name=profile_name, region_name=region_name)
 
     def __call__(self, service):
         self.client = self.session.client(service)
@@ -53,7 +51,10 @@ class Aws:
         config = self.s3.get_json_object(bucket, key)
         misc.import_env_vars(config)
 
-    def invoke(self, function_name, payload):
+    def cognito(self):
+        self.client = self.session.client('cognito-idp')
+
+    def invoke_lambda(self, function_name, payload):
         response = self.session.client("lambda").invoke(
             FunctionName=function_name,
             Payload=json.dumps(payload)
@@ -61,12 +62,12 @@ class Aws:
         return response["Payload"].read().decode('utf-8')
 
     @property
-    def dydb(self):
-        return DynamoDb(self.session)
-
-    @property
     def gateway(self):
         return Gateway(self.session)
+
+    @property
+    def dydb(self):
+        return DynamoDb(self.session)
 
     @property
     def logs(self):
