@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name='aws-utils',
     version='1.0.0',
-    packages=['tests', 'aws_utils'],
+    packages=['aws_utils'],
     url='https://github.com/wobeng/aws-utils',
     license='',
     author='wobeng',
