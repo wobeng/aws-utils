@@ -33,7 +33,7 @@ class Aws:
         self.session = session or boto3.session.Session(profile_name=profile_name, region_name=region_name)
 
     def __call__(self, service):
-        self.client = self.session.client(service)
+        return self.session.client(service)
 
     def load_config(self, bucket=None, key=None):
 
@@ -51,15 +51,16 @@ class Aws:
         config = self.s3.get_json_object(bucket, key)
         misc.import_env_vars(config)
 
-    def cognito(self):
-        self.client = self.session.client('cognito-idp')
-
     def invoke_lambda(self, function_name, payload):
         response = self.session.client("lambda").invoke(
             FunctionName=function_name,
             Payload=json.dumps(payload)
         )
         return response["Payload"].read().decode('utf-8')
+
+    @property
+    def cognito(self):
+        return self.__call__('cognito-idp')
 
     @property
     def gateway(self):
