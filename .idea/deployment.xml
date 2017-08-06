@@ -5,7 +5,7 @@
       <paths name="wobeng">
         <serverdata>
           <mappings>
-            <mapping deploy="/aws-helper" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/aws-utils" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
