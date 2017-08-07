@@ -12,7 +12,8 @@ setup(
     install_requires=[
         'boto3',
         'requests_aws4auth',
-        'requests'
+        'requests',
+        'py-utils'
     ],
     dependency_links=['git+https://git@github.com/wobeng/py-utils.git@master']
 )
