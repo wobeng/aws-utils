@@ -1,6 +1,6 @@
 import datetime
-
 import os
+
 from boto3.dynamodb.conditions import Key
 
 from aws_utils.utils import convert_types, projection_string
@@ -11,20 +11,14 @@ class DynamoDb:
         self.client = session.client("dynamodb")
         self.resource = session.resource("dynamodb")
 
-    def add_item(self, table, key, item, **kwargs):
+    def post_item(self, table, key, item, **kwargs):
+        item["created_on"] = datetime.datetime.utcnow().isoformat()
         item.update(key)
         item = convert_types(item)
         table = self.resource.Table(os.environ[table])
-        table.put_item(Item=item, **kwargs)
-        return key
-
-    def post_item(self, table, key, item, **kwargs):
-        item["created_on"] = datetime.datetime.utcnow().isoformat()
-        return self.add_item(table, key, item=item, **kwargs)
-
-    def put_item(self, table, key, item, **kwargs):
-        item["updated_on"] = datetime.datetime.utcnow().isoformat()
-        return self.add_item(table, key, item=item ** kwargs)
+        response = table.put_item(Item=item, ReturnValues='ALL_OLD', **kwargs)
+        response['Key'] = key
+        return response
 
     def get_item(self, table, key, **kwargs):
         kwargs = projection_string(kwargs)
@@ -35,8 +29,9 @@ class DynamoDb:
 
     def delete_item(self, table, key, **kwargs):
         table = self.resource.Table(os.environ[table])
-        table.delete_item(Key=key, **kwargs)
-        return key
+        response = table.delete_item(Key=key, ReturnValues='ALL_OLD', **kwargs)
+        response['Key'] = key
+        return response
 
     def query(self, table, key, **kwargs):
         kwargs = projection_string(kwargs)
@@ -84,6 +79,7 @@ class DynamoDb:
             exp += ', '.join(deletes)
             exp += ' '
         table = self.resource.Table(os.environ[table])
-        table.update_item(Key=key, UpdateExpression=exp, ExpressionAttributeNames=names,
-                          ExpressionAttributeValues=values, **kwargs)
-        return key
+        response = table.update_item(Key=key, UpdateExpression=exp, ExpressionAttributeNames=names,
+                                     ExpressionAttributeValues=values, ReturnValues='ALL_NEW', **kwargs)
+        response['Key'] = key
+        return response
