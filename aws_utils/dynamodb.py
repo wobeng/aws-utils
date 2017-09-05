@@ -1,5 +1,6 @@
 import datetime
 import os
+import uuid
 
 from boto3.dynamodb.conditions import Key
 
@@ -47,34 +48,49 @@ class DynamoDb:
 
     def update_item(self, table, key, updates=None, deletes=None, **kwargs):
         exp = ""
-        counter = 1
         names = {}
         values = {}
         updates = updates or {}
         deletes = deletes or []
         updates = convert_types(updates)
         updates["updated_on"] = datetime.datetime.utcnow().isoformat()
+
+        def random_id():
+            return str(uuid.uuid4()).split('-')[0]
+
+        def add_attribute(attribute):
+            if '.' in attribute:
+                return _add_nested_attribute(attribute)
+            return _add_attribute(attribute)
+
+        def add_value(value):
+            val_placeholder = ':val' + random_id()
+            values[val_placeholder] = value
+            return val_placeholder
+
+        def _add_attribute(attribute):
+            attr_placeholder = '#attr' + random_id()
+            names[attr_placeholder] = attribute
+            return attr_placeholder
+
+        def _add_nested_attribute(attribute):
+            attributes = attribute.split('.')
+            for _idx, _val in enumerate(attributes):
+                attr_placeholder = '#attr' + random_id()
+                attributes[_idx] = attr_placeholder
+                names[attr_placeholder] = _val
+            return '.'.join(attributes)
+
         if updates:
-            for f in dict(updates):
-                attr_placeholder = '#attr' + str(counter)
-                val_placeholder = ':val' + str(counter)
-                # replace key and val with placeholder
-                updates[attr_placeholder] = val_placeholder
-                # set placeholders in name and value
-                names[attr_placeholder] = f
-                values[val_placeholder] = updates[f]
-                # delete original key and val
-                del updates[f]
-                counter += 1
+            for key, val in dict(updates).items():
+                updates[add_attribute(key)] = add_value(val)
+                del updates[key]
             exp += 'SET '
             exp += ', '.join("{}={}".format(key, val) for (key, val) in updates.items())
             exp += ' '
         if deletes:
             for index, value in enumerate(deletes):
-                attr_placeholder = '#attr' + str(counter)
-                names[attr_placeholder] = value
-                deletes[index] = attr_placeholder
-                counter += 1
+                deletes[index] = add_attribute(value)
             exp += 'REMOVE '
             exp += ', '.join(deletes)
             exp += ' '
