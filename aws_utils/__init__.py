@@ -10,7 +10,7 @@ from aws_utils.logs import Logs
 from aws_utils.s3 import S3
 
 
-def client(session=None, profile_name=None, region_name=None):
+def client(session=None, profile_name=None, region_name='us-east-1'):
     aws = Aws(session, profile_name, region_name)
     if os.environ.get('SERVERTYPE', "DEV") == "DEV":
         aws.load_config()
@@ -18,7 +18,7 @@ def client(session=None, profile_name=None, region_name=None):
 
 
 class Aws:
-    def __init__(self, session=None, profile_name=None, region_name=None):
+    def __init__(self, session=None, profile_name=None, region_name='us-east-1'):
 
         # load instance if available
         try:
