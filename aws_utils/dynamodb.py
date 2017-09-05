@@ -96,6 +96,6 @@ class DynamoDb:
             exp += ' '
         table = self.resource.Table(os.environ[table])
         response = table.update_item(Key=key, UpdateExpression=exp, ExpressionAttributeNames=names,
-                                     ExpressionAttributeValues=values, ReturnValues='ALL_NEW', **kwargs)
+                                     ExpressionAttributeValues=values, **kwargs)
         response['Key'] = key
         return response
