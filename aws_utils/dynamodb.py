@@ -58,23 +58,23 @@ class DynamoDb:
         def random_id():
             return str(uuid.uuid4()).split('-')[0]
 
-        def add_attribute(attribute):
-            if '.' in attribute:
-                return _add_nested_attribute(attribute)
-            return _add_attribute(attribute)
+        def add_attribute(a):
+            if '.' in a:
+                return _add_nested_attribute(a)
+            return _add_attribute(a)
 
-        def add_value(value):
+        def add_value(v):
             val_placeholder = ':val' + random_id()
-            values[val_placeholder] = value
+            values[val_placeholder] = v
             return val_placeholder
 
-        def _add_attribute(attribute):
+        def _add_attribute(a):
             attr_placeholder = '#attr' + random_id()
-            names[attr_placeholder] = attribute
+            names[attr_placeholder] = a
             return attr_placeholder
 
-        def _add_nested_attribute(attribute):
-            attributes = attribute.split('.')
+        def _add_nested_attribute(a):
+            attributes = a.split('.')
             for _idx, _val in enumerate(attributes):
                 attr_placeholder = '#attr' + random_id()
                 attributes[_idx] = attr_placeholder
@@ -82,11 +82,11 @@ class DynamoDb:
             return '.'.join(attributes)
 
         if updates:
-            for key, val in dict(updates).items():
-                updates[add_attribute(key)] = add_value(val)
-                del updates[key]
+            for k, v in dict(updates).items():
+                updates[add_attribute(k)] = add_value(v)
+                del updates[k]
             exp += 'SET '
-            exp += ', '.join("{}={}".format(key, val) for (key, val) in updates.items())
+            exp += ', '.join("{}={}".format(k, v) for (k, v) in updates.items())
             exp += ' '
         if deletes:
             for index, value in enumerate(deletes):
