@@ -14,6 +14,7 @@ setup(
         'boto3',
         'requests_aws4auth',
         'requests',
+        'cryptography',
         'py-utils==1.0.0'
     ]
 )

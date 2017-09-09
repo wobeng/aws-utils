@@ -1,10 +1,9 @@
 import datetime
 import os
 import uuid
+from decimal import Decimal
 
 from boto3.dynamodb.conditions import Key
-
-from aws_utils.utils import convert_types, projection_string
 
 
 class DynamoDb:
@@ -12,17 +11,47 @@ class DynamoDb:
         self.client = session.client("dynamodb")
         self.resource = session.resource("dynamodb")
 
+    @staticmethod
+    def convert_types(item):
+        for k in dict(item):
+            if isinstance(item[k], datetime.datetime):
+                item[k] = item[k].isoformat()
+            elif isinstance(item[k], float):
+                item[k] = Decimal(str(item[k]))
+            elif isinstance(item[k], dict):
+                item[k] = DynamoDb.convert_types(item[k])
+        return item
+
+    @staticmethod
+    def projection_string(kwargs):
+        if 'ProjectionExpression' in kwargs:
+            names = {}
+            counter = 1
+            attributes = kwargs['ProjectionExpression'].split(',')
+            for a_index, attribute in enumerate(attributes):
+                sub_attributes = attribute.split('.')
+                for sa_index, sub_attribute in enumerate(sub_attributes):
+                    place_holder = '#attr' + str(counter)
+                    names[place_holder] = sub_attribute
+                    sub_attributes[sa_index] = place_holder
+                    counter += 1
+                attribute = '.'.join(sub_attributes)
+                attributes[a_index] = attribute
+            kwargs['ProjectionExpression'] = ','.join(attributes)
+            kwargs['ExpressionAttributeNames'] = names
+        return kwargs
+
     def post_item(self, table, key, item, **kwargs):
         item["created_on"] = datetime.datetime.utcnow().isoformat()
         item.update(key)
-        item = convert_types(item)
+        item = DynamoDb.convert_types(item)
         table = self.resource.Table(os.environ[table])
         response = table.put_item(Item=item, ReturnValues='ALL_OLD', **kwargs)
         response['Key'] = key
         return response
 
     def get_item(self, table, key, **kwargs):
-        kwargs = projection_string(kwargs)
+        kwargs = DynamoDb.projection_string(kwargs)
         table = self.resource.Table(os.environ[table])
         response = table.get_item(Key=key, **kwargs)
         if "Item" in response and response["Item"]:
@@ -35,7 +64,7 @@ class DynamoDb:
         return response
 
     def query(self, table, key, **kwargs):
-        kwargs = projection_string(kwargs)
+        kwargs = DynamoDb.projection_string(kwargs)
         key1, val1 = key.popitem()
         key_exp = Key(key1).eq(val1)
         if key:
@@ -52,7 +81,7 @@ class DynamoDb:
         values = {}
         updates = updates or {}
         deletes = deletes or []
-        updates = convert_types(updates)
+        updates = DynamoDb.convert_types(updates)
         updates["updated_on"] = datetime.datetime.utcnow().isoformat()
 
         def random_id():
