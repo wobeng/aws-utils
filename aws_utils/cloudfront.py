@@ -68,7 +68,7 @@ def generate_cookies(policy, signature, cloudfront_id):
     }
 
 
-def generate_signed_cookies(path, cloudfront_id, private_key, expiration):
+def generate_signed_cookies(path, private_key, private_key_id, expiration):
     policy_json, policy_64 = generate_policy_cookie(path, expiration)
     signature = generate_signature(policy_json, private_key)
-    return generate_cookies(policy_64, signature, cloudfront_id)
+    return generate_cookies(policy_64, signature, private_key_id)
