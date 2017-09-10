@@ -1,9 +1,9 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='aws-utils',
     version='1.0.0',
-    packages=['aws_utils'],
+    packages=find_packages(exclude=['tests', 'tests.*']),
     url='https://github.com/wobeng/aws-utils',
     license='',
     author='wobeng',
