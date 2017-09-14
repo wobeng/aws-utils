@@ -68,7 +68,7 @@ class DynamoDb:
         key1, val1 = partition_key.popitem()
         key_exp = Key(key1).eq(val1)
         if sort_key:
-            key_exp = key_exp + '&' + sort_key
+            key_exp = key_exp & sort_key
         table = self.resource.Table(os.environ[table])
         response = table.query(KeyConditionExpression=key_exp, **kwargs)
         if "Items" in response and response["Items"]:
