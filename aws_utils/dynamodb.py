@@ -63,13 +63,12 @@ class DynamoDb:
         response['Key'] = key
         return response
 
-    def query(self, table, key, **kwargs):
+    def query(self, table, partition_key, sort_key=None, **kwargs):
         kwargs = DynamoDb.projection_string(kwargs)
-        key1, val1 = key.popitem()
+        key1, val1 = partition_key.popitem()
         key_exp = Key(key1).eq(val1)
-        if key:
-            key2, val2 = key.popitem()
-            key_exp = key_exp + '&' + Key(key2).eq(val2)
+        if sort_key:
+            key_exp = key_exp + '&' + sort_key
         table = self.resource.Table(os.environ[table])
         response = table.query(KeyConditionExpression=key_exp, **kwargs)
         if "Items" in response and response["Items"]:
