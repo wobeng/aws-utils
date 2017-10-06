@@ -3,4 +3,3 @@ boto3
 requests_aws4auth
 requests
 cryptography
-git+ssh://git@github.com/wobeng/py-utils.git@master

@@ -1,13 +1,13 @@
 import json
+import os
 
 import boto3
-import os
-from py_utils import misc
 
 from aws_utils.dynamodb import DynamoDb
 from aws_utils.gateway import Gateway
 from aws_utils.logs import Logs
 from aws_utils.s3 import S3
+from aws_utils.utils import import_env_vars
 
 
 def client(session=None, profile_name=None, region_name='us-east-1'):
@@ -48,7 +48,7 @@ class Aws:
             pass
 
         config = self.s3.get_json_object(bucket, key)
-        misc.import_env_vars(config)
+        import_env_vars(config)
 
     def invoke_lambda(self, function_name, payload):
         response = self.session.client("lambda").invoke(

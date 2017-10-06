@@ -9,7 +9,6 @@ setup(
     author='wobeng',
     author_email='wobeng@yblew.com',
     description='aws utility functions',
-    dependency_links=['git+ssh://git@github.com/wobeng/py-utils.git@master#egg=py-utils-1.0.0'],
     install_requires=[
         'boto3',
         'requests_aws4auth',

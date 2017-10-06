@@ -1,8 +1,10 @@
 import json
 import time
 from datetime import datetime
+
 import botocore.exceptions
-from py_utils import dtime, misc
+
+from aws_utils.utils import process_exception, datetime_to_unix_time_millis, date_range
 
 
 class Logs:
@@ -18,14 +20,14 @@ class Logs:
         flight = dict()
 
         if start_date and end_date:
-            start_date_unix = dtime.datetime_to_unix_time_millis(start_date)
-            end_date_unix = dtime.datetime_to_unix_time_millis(end_date)
+            start_date_unix = datetime_to_unix_time_millis(start_date)
+            end_date_unix = datetime_to_unix_time_millis(end_date)
             flight["startTime"] = start_date_unix
             flight["endTime"] = end_date_unix
 
             if log_id:
                 log_stream_names = list()
-                for date in dtime.date_range(start_date, end_date):
+                for date in date_range(start_date, end_date):
                     log_stream_names.append("{}/{}/{}/[$LATEST]{}".format(date.year, date.month, date.day, log_id))
                 flight["logStreamNames"] = log_stream_names
 
@@ -45,7 +47,7 @@ class Logs:
             response = self.client.filter_log_events(**flight)
             return response
         except botocore.exceptions.ClientError as e:
-            misc.process_exception(e)
+            process_exception(e)
             if e.response["Error"]["Code"] == "ResourceNotFoundException":
                 raise KeyError()
 
@@ -78,11 +80,11 @@ class Logs:
                 self.client.put_log_events(**log_event)
                 break
             except KeyError as e:
-                misc.process_exception(e)
+                process_exception(e)
                 self.client.create_log_stream(logGroupName=self._log_group_name,
                                               logStreamName=log_stream)
             except botocore.exceptions.ClientError as e:
-                misc.process_exception(e)
+                process_exception(e)
                 if e.response["Error"]["Code"] == "ResourceNotFoundException":
                     if "log stream" in e.response["Error"]["Message"]:
                         self.client.create_log_stream(logGroupName=self._log_group_name,

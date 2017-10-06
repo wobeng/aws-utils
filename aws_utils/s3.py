@@ -1,9 +1,9 @@
 import json
-from collections import OrderedDict
-
 import os
+from collections import OrderedDict
 from operator import itemgetter
-from py_utils import misc
+
+from aws_utils.utils import make_xlat
 
 
 class S3:
@@ -52,6 +52,6 @@ class S3:
             if find_path in body:
                 fnr[find_path] = cdn_map[find_path]["fingerprint"]
         if fnr:
-            replace = misc.make_xlat(fnr)
+            replace = make_xlat(fnr)
             body = replace(body)
         return body
