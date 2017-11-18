@@ -74,7 +74,7 @@ class DynamoDb:
         if "Items" in response and response["Items"]:
             return response["Items"]
 
-    def update_item(self, table, key, updates=None, deletes=None, **kwargs):
+    def update_item(self, table, key, updates=None, deletes=None, adds=None, **kwargs):
         exp = ""
         names = {}
         values = {}
@@ -121,6 +121,13 @@ class DynamoDb:
                 deletes[index] = add_attribute(value)
             exp += 'REMOVE '
             exp += ', '.join(deletes)
+            exp += ' '
+        if adds:
+            for k, v in dict(adds).items():
+                adds[add_attribute(k)] = add_value(v)
+                del adds[k]
+            exp += 'ADD '
+            exp += ', '.join("{} {}".format(k, v) for (k, v) in adds.items())
             exp += ' '
         table = self.resource.Table(os.environ[table])
         response = table.update_item(Key=key, UpdateExpression=exp, ExpressionAttributeNames=names,
