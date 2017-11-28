@@ -125,7 +125,7 @@ class DynamoDb:
 
         # ensure key exist or reject
         key_exist_conditions = None
-        for k, v in kwargs.items():
+        for k, v in key.items():
             key_exist_conditions = key_exist_conditions & Attr(k).eq(v) if key_exist_conditions else Attr(k).eq(v)
 
         if 'ConditionExpression' in kwargs:
