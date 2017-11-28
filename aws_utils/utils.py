@@ -1,6 +1,7 @@
 import os
 import re
 import traceback
+import uuid
 from datetime import datetime, timedelta
 
 
@@ -40,3 +41,7 @@ def make_xlat(*args, **kwargs):
 def import_env_vars(config):
     for k in config:
         os.environ[str(k)] = str(config[k])
+
+
+def random_id():
+    return str(uuid.uuid4()).split('-')[0]

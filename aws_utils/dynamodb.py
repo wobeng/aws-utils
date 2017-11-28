@@ -1,9 +1,10 @@
 import datetime
 import os
-import uuid
 from decimal import Decimal
 
-from boto3.dynamodb.conditions import Key
+from boto3.dynamodb.conditions import Attr, Key
+
+from aws_utils.utils import random_id
 
 
 class DynamoDb:
@@ -83,54 +84,59 @@ class DynamoDb:
         updates = DynamoDb.convert_types(updates)
         updates["updated_on"] = datetime.datetime.utcnow().isoformat()
 
-        def random_id():
-            return str(uuid.uuid4()).split('-')[0]
-
-        def add_attribute(a):
-            if '.' in a:
-                return _add_nested_attribute(a)
-            return _add_attribute(a)
-
-        def add_value(v):
-            val_placeholder = ':val' + random_id()
-            values[val_placeholder] = v
-            return val_placeholder
-
-        def _add_attribute(a):
-            attr_placeholder = '#attr' + random_id()
-            names[attr_placeholder] = a
-            return attr_placeholder
-
-        def _add_nested_attribute(a):
-            attributes = a.split('.')
+        def add_attribute(attribute):
+            if '.' not in attribute:
+                attr_placeholder = '#attr' + random_id()
+                names[attr_placeholder] = attribute
+                return attr_placeholder
+            attributes = attribute.split('.')
             for _idx, _val in enumerate(attributes):
                 attr_placeholder = '#attr' + random_id()
                 attributes[_idx] = attr_placeholder
                 names[attr_placeholder] = _val
             return '.'.join(attributes)
 
+        def add_value(value):
+            val_placeholder = ':val' + random_id()
+            values[val_placeholder] = value
+            return val_placeholder
+
         if updates:
-            for k, v in dict(updates).items():
-                updates[add_attribute(k)] = add_value(v)
-                del updates[k]
+            for k1, v1 in dict(updates).items():
+                updates[add_attribute(k1)] = add_value(v1)
+                del updates[k1]
             exp += 'SET '
-            exp += ', '.join("{}={}".format(k, v) for (k, v) in updates.items())
+            exp += ', '.join("{}={}".format(k2, v2) for (k2, v2) in updates.items())
             exp += ' '
         if deletes:
-            for index, value in enumerate(deletes):
-                deletes[index] = add_attribute(value)
+            for k3, v3 in enumerate(deletes):
+                deletes[k3] = add_attribute(v3)
             exp += 'REMOVE '
             exp += ', '.join(deletes)
             exp += ' '
         if adds:
-            for k, v in dict(adds).items():
-                adds[add_attribute(k)] = add_value(v)
-                del adds[k]
+            for k4, v4 in dict(adds).items():
+                adds[add_attribute(k4)] = add_value(v4)
+                del adds[k4]
             exp += 'ADD '
-            exp += ', '.join("{} {}".format(k, v) for (k, v) in adds.items())
+            exp += ', '.join("{} {}".format(k5, v5) for (k5, v5) in adds.items())
             exp += ' '
         table = self.resource.Table(os.environ[table])
-        response = table.update_item(Key=key, UpdateExpression=exp, ExpressionAttributeNames=names,
-                                     ExpressionAttributeValues=values, **kwargs)
+
+        # ensure key exist or reject
+        key_exist_conditions = None
+        for k, v in kwargs.items():
+            key_exist_conditions = key_exist_conditions & Attr(k).eq(v) if key_exist_conditions else Attr(k).eq(v)
+
+        if 'ConditionExpression' in kwargs:
+            kwargs['ConditionExpression'] = kwargs['ConditionExpression'] & key_exist_conditions
+        else:
+            kwargs['ConditionExpression'] = key_exist_conditions
+
+        response = table.update_item(
+            Key=key, UpdateExpression=exp,
+            ExpressionAttributeNames=names,
+            ExpressionAttributeValues=values, **kwargs
+        )
         response['Key'] = key
         return response
