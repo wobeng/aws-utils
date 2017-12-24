@@ -9,7 +9,7 @@ class Gateway:
             credentials.access_key,
             credentials.secret_key,
             session.region_name,
-            "execute-api",
+            'execute-api',
             session_token=credentials.token
         )
 

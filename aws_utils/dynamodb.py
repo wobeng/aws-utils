@@ -73,7 +73,8 @@ class DynamoDb:
         table = self.resource.Table(os.environ[table])
         response = table.query(KeyConditionExpression=key_exp, **kwargs)
         if "Items" in response and response["Items"]:
-            return response["Items"]
+            del response['ConsumedCapacity']
+            return response
 
     def update_item(self, table, key, updates=None, deletes=None, adds=None, **kwargs):
         exp = ""

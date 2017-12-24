@@ -12,7 +12,7 @@ from aws_utils.utils import import_env_vars
 
 def client(session=None, profile_name=None, region_name='us-east-1'):
     aws = Aws(session, profile_name, region_name)
-    if os.environ.get('SERVERTYPE', "DEV") == "DEV":
+    if os.environ.get('SERVERTYPE', 'DEV') == 'DEV':
         aws.load_config()
     return aws
 
@@ -37,8 +37,8 @@ class Aws:
     def load_config(self, bucket=None, key=None):
 
         # load config from db
-        bucket = os.environ.get("CONFIG_BUCKET", bucket)
-        key = os.environ.get("KEY", key)
+        bucket = os.environ.get('CONFIG_BUCKET', bucket)
+        key = os.environ.get('KEY', key)
 
         try:
             import instance
@@ -51,11 +51,11 @@ class Aws:
         import_env_vars(config)
 
     def invoke_lambda(self, function_name, payload):
-        response = self.session.client("lambda").invoke(
+        response = self.session.client('lambda').invoke(
             FunctionName=function_name,
             Payload=json.dumps(payload)
         )
-        return response["Payload"].read().decode('utf-8')
+        return response['Payload'].read().decode('utf-8')
 
     @property
     def cognito(self):

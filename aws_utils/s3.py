@@ -8,7 +8,7 @@ from aws_utils.utils import make_xlat
 
 class S3:
     def __init__(self, session):
-        self.client = session.client("s3")
+        self.client = session.client('s3')
 
     def get_object(self, bucket, key, **kwargs):
         response = self.client.get_object(Bucket=bucket, Key=key, **kwargs)
@@ -23,7 +23,7 @@ class S3:
         return response
 
     def download_object(self, bucket, key, save_dir):
-        output = os.path.join(save_dir, key.split("/")[-1])
+        output = os.path.join(save_dir, key.split('/')[-1])
         self.client.download_file(bucket, key, output)
         return output
 
@@ -31,11 +31,11 @@ class S3:
         if not conditions:
             conditions = list()
         if secure:
-            conditions.append({"x-amz-server-side-encryption": "AES256"})
+            conditions.append({'x-amz-server-side-encryption': 'AES256'})
         if content_type_prefix:
-            conditions.append(["starts-with", "$Content-Type", content_type_prefix + "/"])
-        conditions.append(["content-length-range", 1, size])
-        conditions.append({"success_action_status": "201"})
+            conditions.append(['starts-with', '$Content-Type', content_type_prefix + '/'])
+        conditions.append(['content-length-range', 1, size])
+        conditions.append({'success_action_status': '201'})
         return self.client.generate_presigned_post(
             bucket,
             key,
@@ -50,7 +50,7 @@ class S3:
         for path in cdn_map:
             find_path = path
             if find_path in body:
-                fnr[find_path] = cdn_map[find_path]["fingerprint"]
+                fnr[find_path] = cdn_map[find_path]['fingerprint']
         if fnr:
             replace = make_xlat(fnr)
             body = replace(body)
