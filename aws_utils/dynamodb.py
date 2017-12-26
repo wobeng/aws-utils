@@ -72,6 +72,7 @@ class DynamoDb:
             key_exp = key_exp & sort_key
         table = self.resource.Table(os.environ[table])
         response = table.query(KeyConditionExpression=key_exp, **kwargs)
+        print(response)
         if "Items" in response and response["Items"]:
             del response['ConsumedCapacity']
             return response
