@@ -9,8 +9,8 @@ from aws_utils.utils import random_id
 
 class DynamoDb:
     def __init__(self, session):
-        self.client = session.client("dynamodb")
-        self.resource = session.resource("dynamodb")
+        self.client = session.client('dynamodb')
+        self.resource = session.resource('dynamodb')
 
     @staticmethod
     def convert_types(item):
@@ -43,7 +43,7 @@ class DynamoDb:
         return kwargs
 
     def post_item(self, table, key, item, **kwargs):
-        item["created_on"] = datetime.datetime.utcnow().isoformat()
+        item['created_on'] = datetime.datetime.utcnow().isoformat()
         item.update(key)
         item = DynamoDb.convert_types(item)
         table = self.resource.Table(os.environ[table])
@@ -55,8 +55,8 @@ class DynamoDb:
         kwargs = DynamoDb.projection_string(kwargs)
         table = self.resource.Table(os.environ[table])
         response = table.get_item(Key=key, **kwargs)
-        if "Item" in response and response["Item"]:
-            return response["Item"]
+        if 'Item' in response and response['Item']:
+            return response['Item']
 
     def delete_item(self, table, key, **kwargs):
         table = self.resource.Table(os.environ[table])
@@ -72,19 +72,17 @@ class DynamoDb:
             key_exp = key_exp & sort_key
         table = self.resource.Table(os.environ[table])
         response = table.query(KeyConditionExpression=key_exp, **kwargs)
-        print(response)
-        if "Items" in response and response["Items"]:
-            del response['ConsumedCapacity']
-            return response
+        if 'Items' in response and response['Items']:
+            return {x: response[x] for x in ['Count', 'ScannedCount', 'LastEvaluatedKey']}
 
     def update_item(self, table, key, updates=None, deletes=None, adds=None, **kwargs):
-        exp = ""
+        exp = ''
         names = {}
         values = {}
         updates = updates or {}
         deletes = deletes or []
         updates = DynamoDb.convert_types(updates)
-        updates["updated_on"] = datetime.datetime.utcnow().isoformat()
+        updates['updated_on'] = datetime.datetime.utcnow().isoformat()
 
         def add_attribute(attribute):
             if '.' not in attribute:
@@ -108,7 +106,7 @@ class DynamoDb:
                 updates[add_attribute(k1)] = add_value(v1)
                 del updates[k1]
             exp += 'SET '
-            exp += ', '.join("{}={}".format(k2, v2) for (k2, v2) in updates.items())
+            exp += ', '.join('{}={}'.format(k2, v2) for (k2, v2) in updates.items())
             exp += ' '
         if deletes:
             for k3, v3 in enumerate(deletes):
@@ -121,7 +119,7 @@ class DynamoDb:
                 adds[add_attribute(k4)] = add_value(v4)
                 del adds[k4]
             exp += 'ADD '
-            exp += ', '.join("{} {}".format(k5, v5) for (k5, v5) in adds.items())
+            exp += ', '.join('{} {}'.format(k5, v5) for (k5, v5) in adds.items())
             exp += ' '
         table = self.resource.Table(os.environ[table])
 
