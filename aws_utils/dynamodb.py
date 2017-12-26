@@ -73,7 +73,7 @@ class DynamoDb:
         table = self.resource.Table(os.environ[table])
         response = table.query(KeyConditionExpression=key_exp, **kwargs)
         if 'Items' in response and response['Items']:
-            return {k: v for k, v in response.items() if k in ['Count', 'ScannedCount', 'LastEvaluatedKey']}
+            return {k: v for k, v in response.items() if k in ['Items', 'Count', 'ScannedCount', 'LastEvaluatedKey']}
 
     def update_item(self, table, key, updates=None, deletes=None, adds=None, **kwargs):
         exp = ''
