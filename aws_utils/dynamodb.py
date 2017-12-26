@@ -57,6 +57,7 @@ class DynamoDb:
         response = table.get_item(Key=key, **kwargs)
         if 'Item' in response and response['Item']:
             return response['Item']
+        return {}
 
     def delete_item(self, table, key, **kwargs):
         table = self.resource.Table(os.environ[table])
@@ -74,6 +75,7 @@ class DynamoDb:
         response = table.query(KeyConditionExpression=key_exp, **kwargs)
         if 'Items' in response and response['Items']:
             return {k: v for k, v in response.items() if k in ['Items', 'Count', 'ScannedCount', 'LastEvaluatedKey']}
+        return {}
 
     def update_item(self, table, key, updates=None, deletes=None, adds=None, **kwargs):
         exp = ''
