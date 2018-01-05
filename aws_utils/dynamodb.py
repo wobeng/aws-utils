@@ -77,7 +77,7 @@ class DynamoDb:
             return {k: v for k, v in response.items() if k in ['Items', 'Count', 'ScannedCount', 'LastEvaluatedKey']}
         return {}
 
-    def update_item(self, table, key, updates=None, deletes=None, adds=None, **kwargs):
+    def update_item(self, table, key, updates=None, deletes=None, adds=None, appends=None,**kwargs):
         exp = ''
         names = {}
         values = {}
@@ -102,7 +102,13 @@ class DynamoDb:
             val_placeholder = ':val' + random_id()
             values[val_placeholder] = value
             return val_placeholder
-
+        if appends:
+            for k1, v1 in dict(appends).items():
+                appends[add_attribute(k1)] = add_value(v1)
+                del appends[k1]
+            exp += 'SET '
+            exp += ', '.join('{0}=list_append({0},{1})'.format(k2, v2) for (k2, v2) in appends.items())
+            exp += ' '
         if updates:
             for k1, v1 in dict(updates).items():
                 updates[add_attribute(k1)] = add_value(v1)
