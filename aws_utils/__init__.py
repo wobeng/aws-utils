@@ -3,6 +3,7 @@ import os
 
 import boto3
 
+from aws_utils.cloudsearch import Cloudsearch
 from aws_utils.dynamodb import DynamoDb
 from aws_utils.gateway import Gateway
 from aws_utils.logs import Logs
@@ -56,6 +57,9 @@ class Aws:
             Payload=json.dumps(payload)
         )
         return response['Payload'].read().decode('utf-8')
+
+    def cloud_search(self, domain_name):
+        return Cloudsearch(domain_name, self.session)
 
     @property
     def cognito(self):
