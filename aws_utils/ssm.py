@@ -8,9 +8,6 @@ class Ssm:
     def parameter(self, name):
         value = os.environ.get(name, None)
         if not value:
-            try:
-                value = self.client.get_parameter(Name=name, WithDecryption=True)['Parameter']['Value']
-                os.environ[name] = value
-            except:
-                pass
+            value = self.client.get_parameter(Name=name, WithDecryption=True)['Parameter']['Value']
+            os.environ[name] = value
         return value
