@@ -3,8 +3,6 @@ import os
 from collections import OrderedDict
 from operator import itemgetter
 
-from aws_utils.utils import make_xlat
-
 
 class S3:
     def __init__(self, session):
@@ -43,15 +41,3 @@ class S3:
             Conditions=conditions,
             ExpiresIn=3600
         )
-
-    def cdn_find_and_replace(self, body, bucket, cdn_map):
-        cdn_map = self.get_json_object(bucket, cdn_map)
-        fnr = {}
-        for path in cdn_map:
-            find_path = path
-            if find_path in body:
-                fnr[find_path] = cdn_map[find_path]['fingerprint']
-        if fnr:
-            replace = make_xlat(fnr)
-            body = replace(body)
-        return body

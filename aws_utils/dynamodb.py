@@ -1,10 +1,9 @@
 import datetime
 import os
+import uuid
 from decimal import Decimal
 
 from boto3.dynamodb.conditions import Attr, Key
-
-from aws_utils.utils import random_id
 
 
 class DynamoDb:
@@ -42,6 +41,10 @@ class DynamoDb:
             kwargs['ExpressionAttributeNames'] = names
         return kwargs
 
+    @staticmethod
+    def random_id():
+        return str(uuid.uuid4()).split('-')[0]
+
     def post_item(self, table, key, item, **kwargs):
         item['created_on'] = datetime.datetime.utcnow().isoformat()
         item.update(key)
@@ -77,7 +80,7 @@ class DynamoDb:
             return {k: v for k, v in response.items() if k in ['Items', 'Count', 'ScannedCount', 'LastEvaluatedKey']}
         return {}
 
-    def update_item(self, table, key, updates=None, deletes=None, adds=None, appends=None,**kwargs):
+    def update_item(self, table, key, updates=None, deletes=None, adds=None, appends=None, **kwargs):
         exp = ''
         names = {}
         values = {}
@@ -88,20 +91,21 @@ class DynamoDb:
 
         def add_attribute(attribute):
             if '.' not in attribute:
-                attr_placeholder = '#attr' + random_id()
+                attr_placeholder = '#attr' + self.random_id()
                 names[attr_placeholder] = attribute
                 return attr_placeholder
             attributes = attribute.split('.')
             for _idx, _val in enumerate(attributes):
-                attr_placeholder = '#attr' + random_id()
+                attr_placeholder = '#attr' + self.random_id()
                 attributes[_idx] = attr_placeholder
                 names[attr_placeholder] = _val
             return '.'.join(attributes)
 
         def add_value(value):
-            val_placeholder = ':val' + random_id()
+            val_placeholder = ':val' + self.random_id()
             values[val_placeholder] = value
             return val_placeholder
+
         if appends:
             for k1, v1 in dict(appends).items():
                 appends[add_attribute(k1)] = add_value(v1)
