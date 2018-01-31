@@ -29,8 +29,8 @@ class Aws:
         )
         return response['Payload'].read().decode('utf-8')
 
-    def var(self, name):
-        return Ssm(self.session).parameter(name)
+    def var(self, name, default=None):
+        return Ssm(self.session).parameter(name, default)
 
     @property
     def gateway(self):
