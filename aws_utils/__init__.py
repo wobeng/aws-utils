@@ -9,13 +9,13 @@ from aws_utils.s3 import S3
 from aws_utils.ssm import Ssm
 
 
-def client(session=None, profile_name=None, region_name='us-east-1'):
+def client(session=None, profile_name=None, region_name=None):
     aws = Aws(session, profile_name, region_name)
     return aws
 
 
 class Aws:
-    def __init__(self, session=None, profile_name=None, region_name='us-east-1'):
+    def __init__(self, session=None, profile_name=None, region_name=None):
         self.client = None
         self.session = session or boto3.session.Session(profile_name=profile_name, region_name=region_name)
 
