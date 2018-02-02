@@ -11,6 +11,7 @@ class Ssm:
             try:
                 value = self.client.get_parameter(Name=name, WithDecryption=True)['Parameter']['Value']
                 os.environ[name] = value
-            except BaseException:
+            except BaseException as e:
+                print(e)
                 pass
         return value
