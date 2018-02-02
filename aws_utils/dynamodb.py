@@ -1,5 +1,4 @@
 import datetime
-import os
 import uuid
 from decimal import Decimal
 
@@ -49,21 +48,21 @@ class DynamoDb:
         item['created_on'] = datetime.datetime.utcnow().isoformat()
         item.update(key)
         item = DynamoDb.convert_types(item)
-        table = self.resource.Table(os.environ[table])
+        table = self.resource.Table(table)
         response = table.put_item(Item=item, ReturnValues='ALL_OLD', **kwargs)
         response['Key'] = key
         return response
 
     def get_item(self, table, key, **kwargs):
         kwargs = DynamoDb.projection_string(kwargs)
-        table = self.resource.Table(os.environ[table])
+        table = self.resource.Table(table)
         response = table.get_item(Key=key, **kwargs)
         if 'Item' in response and response['Item']:
             return response['Item']
         return {}
 
     def delete_item(self, table, key, **kwargs):
-        table = self.resource.Table(os.environ[table])
+        table = self.resource.Table(table)
         response = table.delete_item(Key=key, ReturnValues='ALL_OLD', **kwargs)
         response['Key'] = key
         return response
@@ -74,7 +73,7 @@ class DynamoDb:
         key_exp = Key(key1).eq(val1)
         if sort_key:
             key_exp = key_exp & sort_key
-        table = self.resource.Table(os.environ[table])
+        table = self.resource.Table(table)
         response = table.query(KeyConditionExpression=key_exp, **kwargs)
         if 'Items' in response and response['Items']:
             return {k: v for k, v in response.items() if k in ['Items', 'Count', 'ScannedCount', 'LastEvaluatedKey']}
@@ -133,7 +132,7 @@ class DynamoDb:
             exp += 'ADD '
             exp += ', '.join('{} {}'.format(k5, v5) for (k5, v5) in adds.items())
             exp += ' '
-        table = self.resource.Table(os.environ[table])
+        table = self.resource.Table(table)
 
         # ensure key exist or reject
         key_exist_conditions = None
