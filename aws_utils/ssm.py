@@ -6,7 +6,7 @@ class Ssm:
         self.client = session.client('ssm')
 
     def parameter(self, name, default=None):
-        value = os.environ.get(name, default)
+        value = os.environ.get(str(name), default)
         if not value:
             try:
                 value = self.client.get_parameter(Name=name, WithDecryption=True)['Parameter']['Value']
