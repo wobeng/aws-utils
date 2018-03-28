@@ -147,7 +147,8 @@ class DynamoDb:
         response = table.update_item(
             Key=key, UpdateExpression=exp,
             ExpressionAttributeNames=names,
-            ExpressionAttributeValues=values, **kwargs
+            ExpressionAttributeValues=values, **kwargs,
+            ReturnValues = 'ALL_OLD'
         )
         response['Key'] = key
         return response
