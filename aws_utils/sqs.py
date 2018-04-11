@@ -2,8 +2,8 @@ class Sqs:
     def __init__(self, session):
         self.client = session.client('sqs')
 
-    def __call__(self, queue_url):
-        self.queue_url = self.client.get_queue_url(QueueName=queue_url)['QueueUrl']
+    def __call__(self, queue_name):
+        self.queue_url = self.client.get_queue_url(QueueName=queue_name)['QueueUrl']
         return self
 
     def send_message(self, **kwargs):
