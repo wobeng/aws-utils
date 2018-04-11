@@ -6,7 +6,9 @@ from aws_utils.dynamodb import DynamoDb
 from aws_utils.gateway import Gateway
 from aws_utils.logs import Logs
 from aws_utils.s3 import S3
+from aws_utils.sqs import Sqs
 from aws_utils.ssm import Ssm
+from aws_utils.swf import Swf
 
 
 def client(session=None, profile_name=None, region_name=None):
@@ -49,5 +51,13 @@ class Aws:
         return S3(self.session)
 
     @property
+    def sqs(self):
+        return Ssm(self.session)
+
+    @property
     def ssm(self):
+        return Ssm(self.session)
+
+    @property
+    def swf(self):
         return Ssm(self.session)
