@@ -52,7 +52,7 @@ class Aws:
 
     @property
     def sqs(self):
-        return Ssm(self.session)
+        return Sqs(self.session)
 
     @property
     def ssm(self):
@@ -60,4 +60,4 @@ class Aws:
 
     @property
     def swf(self):
-        return Ssm(self.session)
+        return Swf(self.session)
