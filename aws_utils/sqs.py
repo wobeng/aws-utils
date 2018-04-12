@@ -1,3 +1,6 @@
+import json
+
+
 class Sqs:
     def __init__(self, session):
         self.client = session.client('sqs')
@@ -6,9 +9,10 @@ class Sqs:
         self.queue_url = self.client.get_queue_url(QueueName=queue_name)['QueueUrl']
         return self
 
-    def send_message(self, **kwargs):
+    def send_message(self, message, **kwargs):
         response = self.client.send_message(
             QueueUrl=self.queue_url,
+            MessageBody=json.dumps(message),
             **kwargs
         )
         return response
