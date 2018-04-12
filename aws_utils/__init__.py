@@ -1,6 +1,5 @@
-import json
-
 import boto3
+from simplejson import dumps
 
 from aws_utils.dynamodb import DynamoDb
 from aws_utils.gateway import Gateway
@@ -27,7 +26,7 @@ class Aws:
     def invoke_lambda(self, function_name, payload):
         response = self.session.client('lambda').invoke(
             FunctionName=function_name,
-            Payload=json.dumps(payload)
+            Payload=dumps(payload)
         )
         return response['Payload'].read().decode('utf-8')
 

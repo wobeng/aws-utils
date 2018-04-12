@@ -148,7 +148,7 @@ class DynamoDb:
             Key=key, UpdateExpression=exp,
             ExpressionAttributeNames=names,
             ExpressionAttributeValues=values, **kwargs,
-            ReturnValues = 'ALL_OLD'
+            ReturnValues='ALL_OLD'
         )
         response['Key'] = key
         return response

@@ -1,4 +1,4 @@
-import json
+from simplejson import dumps
 
 
 class Sqs:
@@ -12,7 +12,7 @@ class Sqs:
     def send_message(self, message, **kwargs):
         response = self.client.send_message(
             QueueUrl=self.queue_url,
-            MessageBody=json.dumps(message),
+            MessageBody=dumps(message, use_decimal=True),
             **kwargs
         )
         return response

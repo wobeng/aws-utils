@@ -1,8 +1,8 @@
-import json
 import time
 from datetime import datetime, timedelta
 
 import botocore.exceptions
+from simplejson import dumps
 
 
 class Logs:
@@ -73,7 +73,7 @@ class Logs:
                     'logEvents': [
                         {
                             'timestamp': int(time.time() * 1000),
-                            'message': json.dumps(message)
+                            'message': dumps(message)
                         }
                     ]
                 }

@@ -1,10 +1,10 @@
 import base64
-import json
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
+from simplejson import dumps
 
 
 def _replace_unsupported_chars(some_str):
@@ -45,7 +45,7 @@ def generate_policy_cookie(url, expiration):
     }
 
     # Using separators=(',', ':') removes seperator whitespace
-    policy_json = json.dumps(policy_dict, separators=(',', ':'))
+    policy_json = dumps(policy_dict, separators=(',', ':'))
 
     policy_64 = str(base64.b64encode(policy_json.encode('utf-8')), 'utf-8')
     policy_64 = _replace_unsupported_chars(policy_64)

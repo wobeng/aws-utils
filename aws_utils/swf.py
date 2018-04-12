@@ -1,4 +1,4 @@
-import json
+from simplejson import dumps
 
 
 class Swf:
@@ -12,7 +12,7 @@ class Swf:
     def start_workflow_execution(self, domain, meta_data, **kwargs):
         response = self.client.start_workflow_execution(
             domain=domain,
-            input=json.dumps(meta_data),
+            input=dumps(meta_data, use_decimal=True),
             **kwargs
         )
         return response
