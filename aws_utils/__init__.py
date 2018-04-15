@@ -8,7 +8,8 @@ from aws_utils.s3 import S3
 from aws_utils.sqs import Sqs
 from aws_utils.ssm import Ssm
 from aws_utils.swf import Swf
-
+from aws_utils.batch import Batch
+from aws_utils.sf import Sf
 
 def client(session=None, profile_name=None, region_name=None):
     aws = Aws(session, profile_name, region_name)
@@ -38,6 +39,10 @@ class Aws:
         return Gateway(self.session)
 
     @property
+    def batch(self):
+        return Batch(self.session)
+
+    @property
     def dydb(self):
         return DynamoDb(self.session)
 
@@ -60,3 +65,7 @@ class Aws:
     @property
     def swf(self):
         return Swf(self.session)
+
+    @property
+    def sf(self):
+        return Sf(self.session)
