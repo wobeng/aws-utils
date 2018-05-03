@@ -23,8 +23,7 @@ def rsa_signer(message, key):
         password=None,
         backend=default_backend()
     )
-    signer = private_key.sign(padding.PKCS1v15(), hashes.SHA1())
-    signer.update(message)
+    signer = private_key.signer(message,padding.PKCS1v15(), hashes.SHA1())
     return signer.finalize()
 
 
