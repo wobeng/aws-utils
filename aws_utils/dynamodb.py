@@ -79,7 +79,8 @@ class DynamoDb:
             return {k: v for k, v in response.items() if k in ['Items', 'Count', 'ScannedCount', 'LastEvaluatedKey']}
         return {}
 
-    def update_item(self, table, key, updates=None, deletes=None, adds=None, appends=None, **kwargs):
+    def update_item(self, table, key, updates=None, deletes=None, adds=None, appends=None, ensure_key_exist=True,
+                    **kwargs):
         exp = ''
         names = {}
         values = {}
@@ -135,14 +136,15 @@ class DynamoDb:
         table = self.resource.Table(table)
 
         # ensure key exist or reject
-        key_exist_conditions = None
-        for k, v in key.items():
-            key_exist_conditions = key_exist_conditions & Attr(k).eq(v) if key_exist_conditions else Attr(k).eq(v)
+        if ensure_key_exist:
+            key_exist_conditions = None
+            for k, v in key.items():
+                key_exist_conditions = key_exist_conditions & Attr(k).eq(v) if key_exist_conditions else Attr(k).eq(v)
 
-        if 'ConditionExpression' in kwargs:
-            kwargs['ConditionExpression'] = kwargs['ConditionExpression'] & key_exist_conditions
-        else:
-            kwargs['ConditionExpression'] = key_exist_conditions
+            if 'ConditionExpression' in kwargs:
+                kwargs['ConditionExpression'] = kwargs['ConditionExpression'] & key_exist_conditions
+            else:
+                kwargs['ConditionExpression'] = key_exist_conditions
 
         response = table.update_item(
             Key=key, UpdateExpression=exp,
