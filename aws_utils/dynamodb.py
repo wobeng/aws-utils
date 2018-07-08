@@ -1,4 +1,6 @@
 import datetime
+import random
+import time
 import uuid
 from decimal import Decimal
 
@@ -9,6 +11,7 @@ class DynamoDb:
     def __init__(self, session):
         self.client = session.client('dynamodb')
         self.resource = session.resource('dynamodb')
+        self.get_items_queue = {}
 
     @staticmethod
     def convert_types(item):
@@ -60,6 +63,24 @@ class DynamoDb:
         if 'Item' in response and response['Item']:
             return response['Item']
         return {}
+
+    def add_get_items(self, table, keys, **kwargs):
+        kwargs['Keys'] = keys
+        kwargs = DynamoDb.projection_string(kwargs)
+        self.get_items_queue[table] = kwargs
+
+    def get_items(self):
+        n = 0
+        results = {}
+        response = self.client.batch_get_item(RequestItems=self.get_items_queue)
+        results.update(response['Responses'])
+        while response['UnprocessedKeys']:
+            # Implement some kind of exponential back off here
+            n = n + 1
+            time.sleep((2 ** n) + random.randint(0, 1000) / 1000)
+            response = self.client.batch_get_item(RequestItems=response['UnprocessedKeys'])
+            results.update(response['Responses'])
+        return results
 
     def delete_item(self, table, key, **kwargs):
         table = self.resource.Table(table)

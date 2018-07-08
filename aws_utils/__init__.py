@@ -1,15 +1,16 @@
 import boto3
 from simplejson import dumps
 
+from aws_utils.batch import Batch
 from aws_utils.dynamodb import DynamoDb
 from aws_utils.gateway import Gateway
 from aws_utils.logs import Logs
 from aws_utils.s3 import S3
+from aws_utils.sf import Sf
 from aws_utils.sqs import Sqs
 from aws_utils.ssm import Ssm
 from aws_utils.swf import Swf
-from aws_utils.batch import Batch
-from aws_utils.sf import Sf
+
 
 def client(session=None, profile_name=None, region_name=None):
     aws = Aws(session, profile_name, region_name)
