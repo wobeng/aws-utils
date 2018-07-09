@@ -73,6 +73,7 @@ class DynamoDb:
     def get_items(self):
         n = 0
         results = {}
+        print(self.get_items_queue)
         response = self.client.batch_get_item(RequestItems=self.get_items_queue)
         results.update(response['Responses'])
         while response['UnprocessedKeys']:
