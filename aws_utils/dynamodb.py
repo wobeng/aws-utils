@@ -68,6 +68,7 @@ class DynamoDb:
         kwargs['Keys'] = keys
         kwargs = DynamoDb.projection_string(kwargs)
         self.get_items_queue[table] = kwargs
+        return self
 
     def get_items(self):
         n = 0
