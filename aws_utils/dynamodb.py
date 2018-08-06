@@ -54,6 +54,7 @@ class DynamoDb:
         table = self.resource.Table(table)
         response = table.put_item(Item=item, ReturnValues='ALL_OLD', **kwargs)
         response['Key'] = key
+        response['Table'] = table
         return response
 
     def get_item(self, table, key, **kwargs):
@@ -87,6 +88,7 @@ class DynamoDb:
         table = self.resource.Table(table)
         response = table.delete_item(Key=key, ReturnValues='ALL_OLD', **kwargs)
         response['Key'] = key
+        response['Table'] = table
         return response
 
     def query(self, table, partition_key, sort_key=None, **kwargs):
@@ -175,4 +177,5 @@ class DynamoDb:
             ReturnValues='ALL_OLD'
         )
         response['Key'] = key
+        response['Table'] = table
         return response
