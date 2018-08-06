@@ -51,16 +51,16 @@ class DynamoDb:
         item['created_on'] = datetime.datetime.utcnow().isoformat()
         item.update(key)
         item = DynamoDb.convert_types(item)
-        table = self.resource.Table(table)
-        response = table.put_item(Item=item, ReturnValues='ALL_OLD', **kwargs)
+        _table = self.resource.Table(table)
+        response = _table.put_item(Item=item, ReturnValues='ALL_OLD', **kwargs)
         response['Key'] = key
         response['Table'] = table
         return response
 
     def get_item(self, table, key, **kwargs):
         kwargs = DynamoDb.projection_string(kwargs)
-        table = self.resource.Table(table)
-        response = table.get_item(Key=key, **kwargs)
+        _table = self.resource.Table(table)
+        response = _table.get_item(Key=key, **kwargs)
         if 'Item' in response and response['Item']:
             return response['Item']
         return {}
@@ -85,8 +85,8 @@ class DynamoDb:
         return results
 
     def delete_item(self, table, key, **kwargs):
-        table = self.resource.Table(table)
-        response = table.delete_item(Key=key, ReturnValues='ALL_OLD', **kwargs)
+        _table = self.resource.Table(table)
+        response = _table.delete_item(Key=key, ReturnValues='ALL_OLD', **kwargs)
         response['Key'] = key
         response['Table'] = table
         return response
@@ -97,8 +97,8 @@ class DynamoDb:
         key_exp = Key(key1).eq(val1)
         if sort_key:
             key_exp = key_exp & sort_key
-        table = self.resource.Table(table)
-        response = table.query(KeyConditionExpression=key_exp, **kwargs)
+        _table = self.resource.Table(table)
+        response = _table.query(KeyConditionExpression=key_exp, **kwargs)
         if 'Items' in response and response['Items']:
             return {k: v for k, v in response.items() if k in ['Items', 'Count', 'ScannedCount', 'LastEvaluatedKey']}
         return {}
@@ -157,7 +157,7 @@ class DynamoDb:
             exp += 'ADD '
             exp += ', '.join('{} {}'.format(k5, v5) for (k5, v5) in adds.items())
             exp += ' '
-        table = self.resource.Table(table)
+        _table = self.resource.Table(table)
 
         # ensure key exist or reject
         if ensure_key_exist:
@@ -170,7 +170,7 @@ class DynamoDb:
             else:
                 kwargs['ConditionExpression'] = key_exist_conditions
 
-        response = table.update_item(
+        response = _table.update_item(
             Key=key, UpdateExpression=exp,
             ExpressionAttributeNames=names,
             ExpressionAttributeValues=values, **kwargs,
