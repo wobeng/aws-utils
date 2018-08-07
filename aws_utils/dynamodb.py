@@ -55,6 +55,7 @@ class DynamoDb:
         response = _table.put_item(Item=item, ReturnValues='ALL_OLD', **kwargs)
         response['Key'] = key
         response['Table'] = table
+        response['Item'] = item
         return response
 
     def get_item(self, table, key, **kwargs):
@@ -178,4 +179,8 @@ class DynamoDb:
         )
         response['Key'] = key
         response['Table'] = table
+        response['Updates'] = updates
+        response['Deletes'] = deletes
+        response['Adds'] = adds
+        response['Appends'] = appends
         return response
