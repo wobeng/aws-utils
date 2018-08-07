@@ -109,10 +109,12 @@ class DynamoDb:
         exp = ''
         names = {}
         values = {}
-        updates = updates or {}
-        deletes = deletes or []
-        updates = DynamoDb.convert_types(updates)
-        updates['updated_on'] = datetime.datetime.utcnow().isoformat()
+        _updates = updates or {}
+        _deletes = deletes or []
+        _adds = adds or {}
+        _appends = appends or {}
+        _updates = DynamoDb.convert_types(_updates)
+        _updates['updated_on'] = datetime.datetime.utcnow().isoformat()
 
         def add_attribute(attribute):
             if '.' not in attribute:
@@ -131,32 +133,32 @@ class DynamoDb:
             values[val_placeholder] = value
             return val_placeholder
 
-        if appends:
-            for k1, v1 in dict(appends).items():
-                appends[add_attribute(k1)] = add_value(v1)
-                del appends[k1]
+        if _appends:
+            for k1, v1 in dict(_appends).items():
+                _appends[add_attribute(k1)] = add_value(v1)
+                del _appends[k1]
             exp += 'SET '
-            exp += ', '.join('{0}=list_append({0},{1})'.format(k2, v2) for (k2, v2) in appends.items())
+            exp += ', '.join('{0}=list_append({0},{1})'.format(k2, v2) for (k2, v2) in _appends.items())
             exp += ' '
-        if updates:
-            for k1, v1 in dict(updates).items():
-                updates[add_attribute(k1)] = add_value(v1)
-                del updates[k1]
+        if _updates:
+            for k1, v1 in dict(_updates).items():
+                _updates[add_attribute(k1)] = add_value(v1)
+                del _updates[k1]
             exp += 'SET '
-            exp += ', '.join('{}={}'.format(k2, v2) for (k2, v2) in updates.items())
+            exp += ', '.join('{}={}'.format(k2, v2) for (k2, v2) in _updates.items())
             exp += ' '
-        if deletes:
-            for k3, v3 in enumerate(deletes):
-                deletes[k3] = add_attribute(v3)
+        if _deletes:
+            for k3, v3 in enumerate(_deletes):
+                _deletes[k3] = add_attribute(v3)
             exp += 'REMOVE '
-            exp += ', '.join(deletes)
+            exp += ', '.join(_deletes)
             exp += ' '
-        if adds:
-            for k4, v4 in dict(adds).items():
-                adds[add_attribute(k4)] = add_value(v4)
-                del adds[k4]
+        if _adds:
+            for k4, v4 in dict(_adds).items():
+                _adds[add_attribute(k4)] = add_value(v4)
+                del _adds[k4]
             exp += 'ADD '
-            exp += ', '.join('{} {}'.format(k5, v5) for (k5, v5) in adds.items())
+            exp += ', '.join('{} {}'.format(k5, v5) for (k5, v5) in _adds.items())
             exp += ' '
         _table = self.resource.Table(table)
 
