@@ -1,3 +1,4 @@
+import copy
 import datetime
 import random
 import time
@@ -48,11 +49,12 @@ class DynamoDb:
         return str(uuid.uuid4()).split('-')[0]
 
     def post_item(self, table, key, item, **kwargs):
-        item['created_on'] = datetime.datetime.utcnow().isoformat()
-        item.update(key)
-        item = DynamoDb.convert_types(item)
+        _item = copy.deepcopy(item) or {}
+        _item['created_on'] = datetime.datetime.utcnow().isoformat()
+        _item.update(key)
+        _item = DynamoDb.convert_types(_item)
         _table = self.resource.Table(table)
-        response = _table.put_item(Item=item, ReturnValues='ALL_OLD', **kwargs)
+        response = _table.put_item(Item=_item, ReturnValues='ALL_OLD', **kwargs)
         response['Key'] = key
         response['Table'] = table
         response['Item'] = item
@@ -109,10 +111,10 @@ class DynamoDb:
         exp = ''
         names = {}
         values = {}
-        _updates = updates or {}
-        _deletes = deletes or []
-        _adds = adds or {}
-        _appends = appends or {}
+        _updates = copy.deepcopy(updates) or {}
+        _deletes = copy.deepcopy(deletes) or []
+        _adds = copy.deepcopy(adds) or {}
+        _appends = copy.deepcopy(appends) or {}
         _updates = DynamoDb.convert_types(_updates)
         _updates['updated_on'] = datetime.datetime.utcnow().isoformat()
 
