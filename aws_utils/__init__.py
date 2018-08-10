@@ -30,7 +30,8 @@ class Aws:
             FunctionName=function_name,
             Payload=dumps(payload)
         )
-        return response['Payload'].read().decode('utf-8')
+        response['Payload'] = response['Payload'].read().decode('utf-8')
+        return response
 
     def var(self, name, default=None):
         return Ssm(self.session).parameter(name, default)
