@@ -133,6 +133,7 @@ class DynamoDb:
                 if '[' in _val and ']' in _val:
                     element = _val[-3:]
                     _val = _val[:-3]
+                print(element,_val)
                 attr_placeholder = '#attr' + self.random_id()
                 attributes[_idx + element] = attr_placeholder
                 names[attr_placeholder] = _val
