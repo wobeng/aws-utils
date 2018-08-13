@@ -135,7 +135,7 @@ class DynamoDb:
                     _val = _val[:-3]
                 print(element,_val)
                 attr_placeholder = '#attr' + self.random_id()
-                attributes[_idx + element] = attr_placeholder
+                attributes[_idx] = attr_placeholder + element
                 names[attr_placeholder] = _val
             return '.'.join(attributes)
 
