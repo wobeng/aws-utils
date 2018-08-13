@@ -119,7 +119,6 @@ class DynamoDb:
         _updates['updated_on'] = datetime.datetime.utcnow().isoformat()
 
         def add_attribute(attribute):
-            print(attribute)
             if '.' not in attribute:
                 element = ''
                 if '[' in attribute and ']' in attribute:
@@ -185,11 +184,7 @@ class DynamoDb:
                 kwargs['ConditionExpression'] = kwargs['ConditionExpression'] & key_exist_conditions
             else:
                 kwargs['ConditionExpression'] = key_exist_conditions
-        print(key)
-        print(exp)
-        print(names)
-        print(values)
-        print(kwargs)
+
         response = _table.update_item(
             Key=key, UpdateExpression=exp,
             ExpressionAttributeNames=names,
