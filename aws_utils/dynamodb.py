@@ -177,7 +177,6 @@ class DynamoDb:
                 kwargs['ConditionExpression'] = kwargs['ConditionExpression'] & key_exist_conditions
             else:
                 kwargs['ConditionExpression'] = key_exist_conditions
-        print(exp)
         response = _table.update_item(
             Key=key, UpdateExpression=exp,
             ExpressionAttributeNames=names,
