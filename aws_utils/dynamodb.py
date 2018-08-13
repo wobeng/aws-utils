@@ -179,17 +179,17 @@ class DynamoDb:
                 kwargs['ConditionExpression'] = kwargs['ConditionExpression'] & key_exist_conditions
             else:
                 kwargs['ConditionExpression'] = key_exist_conditions
+        print(key)
+        print(exp)
+        print(names)
+        print(values)
+        print(kwargs)
         response = _table.update_item(
             Key=key, UpdateExpression=exp,
             ExpressionAttributeNames=names,
             ExpressionAttributeValues=values, **kwargs,
             ReturnValues='ALL_OLD'
         )
-        print(key)
-        print(exp)
-        print(names)
-        print(values)
-        print(kwargs)
         response['Key'] = key
         response['Table'] = table
         response['Updates'] = updates
