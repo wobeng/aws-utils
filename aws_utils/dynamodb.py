@@ -183,7 +183,11 @@ class DynamoDb:
             ExpressionAttributeValues=values, **kwargs,
             ReturnValues='ALL_OLD'
         )
-        print(key, exp, names, values, kwargs)
+        print(key)
+        print(exp)
+        print(names)
+        print(values)
+        print(kwargs)
         response['Key'] = key
         response['Table'] = table
         response['Updates'] = updates
