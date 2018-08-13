@@ -128,6 +128,7 @@ class DynamoDb:
                 attr_placeholder = '#attr' + self.random_id()
                 attributes[_idx] = attr_placeholder
                 names[attr_placeholder] = _val
+            return attributes
             return '.'.join(attributes)
 
         def add_value(value):
