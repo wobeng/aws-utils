@@ -135,19 +135,21 @@ class DynamoDb:
             values[val_placeholder] = value
             return val_placeholder
 
+        if _appends or _updates:
+            exp += 'SET '
         if _appends:
             for k1, v1 in dict(_appends).items():
                 _appends[add_attribute(k1)] = add_value(v1)
                 del _appends[k1]
-            exp += 'SET '
             exp += ', '.join('{0}=list_append({0},{1})'.format(k2, v2) for (k2, v2) in _appends.items())
-            exp += ' '
         if _updates:
             for k1, v1 in dict(_updates).items():
                 _updates[add_attribute(k1)] = add_value(v1)
                 del _updates[k1]
-            exp += 'SET '
+            if exp != 'SET ':
+                exp += ', '
             exp += ', '.join('{}={}'.format(k2, v2) for (k2, v2) in _updates.items())
+        if _appends or _updates:
             exp += ' '
         if _deletes:
             for k3, v3 in enumerate(_deletes):
@@ -174,7 +176,7 @@ class DynamoDb:
                 kwargs['ConditionExpression'] = kwargs['ConditionExpression'] & key_exist_conditions
             else:
                 kwargs['ConditionExpression'] = key_exist_conditions
-
+        print(exp)
         response = _table.update_item(
             Key=key, UpdateExpression=exp,
             ExpressionAttributeNames=names,
