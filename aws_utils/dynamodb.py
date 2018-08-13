@@ -120,17 +120,23 @@ class DynamoDb:
 
         def add_attribute(attribute):
             print(attribute)
-            if '[' in attribute and ']' in attribute:
-                return attribute
             if '.' not in attribute:
+                element = ''
+                if '[' in attribute and ']' in attribute:
+                    element = attribute[-3:]
+                    attribute = attribute[:-3]
                 attr_placeholder = '#attr' + self.random_id()
-                names[attr_placeholder] = attribute
+                names[attr_placeholder + element] = attribute
                 return attr_placeholder
             attributes = attribute.split('.')
             for _idx, _val in enumerate(attributes):
+                element = ''
+                if '[' in _val and ']' in _val:
+                    element = _val[-3:]
+                    _val = _val[:-3]
                 attr_placeholder = '#attr' + self.random_id()
                 attributes[_idx] = attr_placeholder
-                names[attr_placeholder] = _val
+                names[attr_placeholder + element] = _val
             return '.'.join(attributes)
 
         def add_value(value):
