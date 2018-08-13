@@ -119,6 +119,7 @@ class DynamoDb:
         _updates['updated_on'] = datetime.datetime.utcnow().isoformat()
 
         def add_attribute(attribute):
+            return attribute
             if '.' not in attribute:
                 attr_placeholder = '#attr' + self.random_id()
                 names[attr_placeholder] = attribute
@@ -128,7 +129,6 @@ class DynamoDb:
                 attr_placeholder = '#attr' + self.random_id()
                 attributes[_idx] = attr_placeholder
                 names[attr_placeholder] = _val
-            return attributes
             return '.'.join(attributes)
 
         def add_value(value):
