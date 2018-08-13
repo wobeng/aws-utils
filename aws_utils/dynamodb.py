@@ -126,8 +126,8 @@ class DynamoDb:
                     element = attribute[-3:]
                     attribute = attribute[:-3]
                 attr_placeholder = '#attr' + self.random_id()
-                names[attr_placeholder + element] = attribute
-                return attr_placeholder
+                names[attr_placeholder] = attribute
+                return attr_placeholder + element
             attributes = attribute.split('.')
             for _idx, _val in enumerate(attributes):
                 element = ''
@@ -135,8 +135,8 @@ class DynamoDb:
                     element = _val[-3:]
                     _val = _val[:-3]
                 attr_placeholder = '#attr' + self.random_id()
-                attributes[_idx] = attr_placeholder
-                names[attr_placeholder + element] = _val
+                attributes[_idx + element] = attr_placeholder
+                names[attr_placeholder] = _val
             return '.'.join(attributes)
 
         def add_value(value):
