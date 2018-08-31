@@ -18,8 +18,20 @@ class Sqs:
         return response
 
     def send_message_batch(self, entries):
-        response = self.client.send_message_batch(
-            QueueUrl=self.queue_url,
-            Entries=entries
-        )
-        return response
+
+        n = 10
+        new_entries = [entries[i * n:(i + 1) * n] for i in range((len(entries) + n - 1) // n)]
+
+        for ne in new_entries:
+            ne_copy = ne.copy()
+            get_out = False
+            while not get_out:
+                response = self.client.send_message_batch(
+                    QueueUrl=self.queue_url,
+                    Entries=ne_copy
+                )
+                if response.get('Failed', None):
+                    failed_ids = [f['Id'] for f in response['Failed']]
+                    ne_copy = [e for e in ne if e['Id'] in failed_ids]
+                else:
+                    get_out = True
