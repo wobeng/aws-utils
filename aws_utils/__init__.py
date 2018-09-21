@@ -6,6 +6,7 @@ from aws_utils.dynamodb import DynamoDb
 from aws_utils.gateway import Gateway
 from aws_utils.logs import Logs
 from aws_utils.s3 import S3
+from aws_utils.ses import Ses
 from aws_utils.sf import Sf
 from aws_utils.sqs import Sqs
 from aws_utils.ssm import Ssm
@@ -71,3 +72,7 @@ class Aws:
     @property
     def sf(self):
         return Sf(self.session)
+
+    @property
+    def ses(self):
+        return Ses(self.session)
