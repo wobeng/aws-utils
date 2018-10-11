@@ -8,6 +8,7 @@ from aws_utils.logs import Logs
 from aws_utils.s3 import S3
 from aws_utils.ses import Ses
 from aws_utils.sf import Sf
+from aws_utils.sns import Sns
 from aws_utils.sqs import Sqs
 from aws_utils.ssm import Ssm
 from aws_utils.swf import Swf
@@ -76,3 +77,7 @@ class Aws:
     @property
     def ses(self):
         return Ses(self.session)
+
+    @property
+    def sns(self):
+        return Sns(self.session)
