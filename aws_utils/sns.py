@@ -6,7 +6,7 @@ from json import dumps
 class Sns:
     def __init__(self, session):
         self.client = session.client('sns')
-        self.region_name = session.Session().region_name
+        self.region_name = session.region_name
 
     def __call__(self, group_name=None, region_name=None):
         if group_name:
