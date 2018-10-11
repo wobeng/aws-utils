@@ -13,6 +13,7 @@ class Sns:
             self.group_name = group_name
         if region_name:
             self.region_name = region_name
+        return self
 
     def publish(self, subject, message):
         account_id = self.client.get_caller_identity()['Account']
