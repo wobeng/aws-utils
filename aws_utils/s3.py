@@ -1,6 +1,7 @@
 import os
 from collections import OrderedDict
 from operator import itemgetter
+from uuid import uuid4
 
 from simplejson import loads
 
@@ -22,8 +23,11 @@ class S3:
             response = OrderedDict(sorted(response.items(), key=itemgetter(1)))
         return response
 
-    def download_object(self, bucket, key, save_dir):
-        output = os.path.join(save_dir, key.split('/')[-1])
+    def download_object(self, bucket, key, save_dir, rename=False):
+        filename = key.split('/')[-1]
+        if rename:
+            filename = str(uuid4()) + '.' + filename.split('.')[-1]
+        output = os.path.join(save_dir, filename)
         self.client.download_file(bucket, key, output)
         return output
 
