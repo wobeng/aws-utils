@@ -8,6 +8,7 @@ from simplejson import loads
 class S3:
     def __init__(self, session):
         self.client = session.client('s3')
+        self.resource = session.resource('s3')
 
     def get_object(self, bucket, key, **kwargs):
         response = self.client.get_object(Bucket=bucket, Key=key, **kwargs)
