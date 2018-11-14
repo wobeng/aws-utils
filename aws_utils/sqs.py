@@ -17,6 +17,8 @@ class Sqs:
             ne_copy = ne.copy()
             get_out = False
             while not get_out:
+                print(self.client)
+                print(function_name)
                 response = getattr(self.client, function_name)(
                     QueueUrl=self.queue_url,
                     Entries=ne_copy
