@@ -3,6 +3,7 @@ from simplejson import dumps
 
 from aws_utils.batch import Batch
 from aws_utils.dynamodb import DynamoDb
+from aws_utils.dydb_transact import DynamoDbTransaction
 from aws_utils.gateway import Gateway
 from aws_utils.logs import Logs
 from aws_utils.s3 import S3
@@ -49,6 +50,10 @@ class Aws:
     @property
     def dydb(self):
         return DynamoDb(self.session)
+
+    @property
+    def dydb_transact(self):
+        return DynamoDbTransaction(self.session)
 
     @property
     def logs(self):
