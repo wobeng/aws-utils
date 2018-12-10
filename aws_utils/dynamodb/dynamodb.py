@@ -77,7 +77,7 @@ class DynamoDb:
                     **kwargs):
         kwargs = base.update_item(key, updates, deletes, adds, appends, ensure_key_exist, **kwargs)
         kwargs['ReturnValues'] = 'ALL_OLD'
-        response = self.table_name.update_item(**kwargs)
+        response = self.table.update_item(**kwargs)
         response['Key'] = key
         response['Table'] = self.table_name
         response['Updates'] = updates

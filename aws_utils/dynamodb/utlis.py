@@ -2,6 +2,7 @@ import datetime
 import uuid
 from decimal import Decimal
 
+from boto3.dynamodb.conditions import ConditionExpressionBuilder
 from boto3.dynamodb.types import TypeSerializer, TypeDeserializer
 
 
@@ -14,9 +15,21 @@ def transaction(func):
         if 'Item' in kwargs:
             kwargs['Item'] = serialize_input(kwargs['Item'])
         if 'ExpressionAttributeValues' in kwargs:
-            kwargs['ExpressionAttributeValues'] =serialize_input(kwargs['ExpressionAttributeValues'])
+            kwargs['ExpressionAttributeValues'] = serialize_input(kwargs['ExpressionAttributeValues'])
+        if 'ConditionExpression' in kwargs:
+            exp_string, names, values = ConditionExpressionBuilder().build_expression(kwargs['ConditionExpression'])
+            values = serialize_input(values)
+            kwargs['ConditionExpression'] = exp_string
+            if 'ExpressionAttributeNames' in kwargs:
+                kwargs['ExpressionAttributeNames'].update(names)
+            else:
+                kwargs['ExpressionAttributeNames'] = names
+            if 'ExpressionAttributeValues' in kwargs:
+                kwargs['ExpressionAttributeValues'].update(values)
+            else:
+                kwargs['ExpressionAttributeValues'] = values
         kwargs['TableName'] = self.table_name
-        getattr(self, func.__name__+'_items').append(kwargs)
+        getattr(self, func.__name__ + '_items').append(kwargs)
         return self
 
     return wrapper

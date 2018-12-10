@@ -105,10 +105,6 @@ def update_item(key, updates=None, deletes=None, adds=None, appends=None, ensure
         else:
             kwargs['ConditionExpression'] = key_exist_conditions
 
-    _expression = kwargs['ConditionExpression'].get_expression()
-    print(_expression)
-    print(Attr('that').eq('this').get_expression())
-
     kwargs['Key'] = key
     kwargs['UpdateExpression'] = exp
     kwargs['ExpressionAttributeNames'] = names
