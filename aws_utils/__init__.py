@@ -2,8 +2,8 @@ import boto3
 from simplejson import dumps
 
 from aws_utils.batch import Batch
-from aws_utils.dynamodb import DynamoDb
-from aws_utils.dydb_transact import DynamoDbTransaction
+from aws_utils.dynamodb.dynamodb import DynamoDb
+from aws_utils.dynamodb.transaction import DynamoDbTransaction
 from aws_utils.gateway import Gateway
 from aws_utils.logs import Logs
 from aws_utils.s3 import S3

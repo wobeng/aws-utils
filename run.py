@@ -3,21 +3,24 @@ from aws_utils import client
 aws = client()
 
 dydb_transact = aws.dydb_transact
+dydb_transact = dydb_transact(table_name='CaseFeed')
 
-dydb_transact.post_item(
-    table='CaseFeed',
+"""
+dydb_transact.get_item(
     key={
         'case_id': 'case_id-post',
         'post_id': 'post_id-post'
     },
-    item={'info': 'info'}
+    ProjectionExpression='info'
 )
+dydb_transact.transact_read()
+"""
 dydb_transact.update_item(
-    table='CaseFeed',
     key={
-        'case_id': 'case_id1',
-        'post_id': 'post_id1'
+        'case_id': 'case_id-post',
+        'post_id': 'post_id-post'
     },
-    updates={'info-update': 'info-update'}
+    updates={'info2' : 'info2'}
 )
-print(dydb_transact.transact_write())
+
+dydb_transact.transact_write()
