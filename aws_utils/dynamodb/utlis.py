@@ -80,7 +80,7 @@ def random_id():
     return str(uuid.uuid4()).split('-')[0]
 
 
-def decorate_get_item(item):
+def deserialize_item(item):
     if 'Item' in item and item['Item']:
         return deserialize_output(item['Item'])
     return {}

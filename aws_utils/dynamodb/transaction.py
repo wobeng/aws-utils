@@ -1,5 +1,5 @@
 from aws_utils.dynamodb import base
-from aws_utils.dynamodb.utlis import decorate_get_item, transaction
+from aws_utils.dynamodb.utlis import deserialize_item, transaction
 
 
 class DynamoDbTransaction:
@@ -55,4 +55,4 @@ class DynamoDbTransaction:
     def transact_read(self):
         transact_items = [{'Get': item} for item in self.get_item_items]
         response = self.client.transact_get_items(TransactItems=transact_items)
-        return [decorate_get_item(item) for item in response['Responses'] if item]
+        return [deserialize_item(item) for item in response['Responses'] if item]
