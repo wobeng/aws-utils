@@ -50,7 +50,7 @@ class DynamoDb:
         return {}
 
     def post_item(self, key, item, **kwargs):
-        kwargs = base.post_item(key, item, **kwargs)
+        kwargs = base.post_item(key=key, item=item, **kwargs)
         kwargs['ReturnValues'] = 'ALL_OLD'
         response = self.table.put_item(**kwargs)
         response['Key'] = key
@@ -59,14 +59,14 @@ class DynamoDb:
         return response
 
     def get_item(self, key, **kwargs):
-        kwargs = base.get_item(key, **kwargs)
+        kwargs = base.get_item(key=key, **kwargs)
         response = self.table.get_item(**kwargs)
         if 'Item' in response and response['Item']:
             return response['Item']
         return {}
 
     def delete_item(self, key, **kwargs):
-        kwargs = base.delete_item(key, **kwargs)
+        kwargs = base.delete_item(key=key, **kwargs)
         kwargs['ReturnValues'] = 'ALL_OLD'
         response = self.table.delete_item(**kwargs)
         response['Key'] = key
@@ -75,7 +75,10 @@ class DynamoDb:
 
     def update_item(self, key, updates=None, deletes=None, adds=None, appends=None, ensure_key_exist=True,
                     **kwargs):
-        kwargs = base.update_item(key, updates, deletes, adds, appends, ensure_key_exist, **kwargs)
+        kwargs = base.update_item(
+            key=key, updates=updates, deletes=deletes, adds=adds,
+            appends=appends, ensure_key_exist=ensure_key_exist, **kwargs
+        )
         kwargs['ReturnValues'] = 'ALL_OLD'
         response = self.table.update_item(**kwargs)
         response['Key'] = key

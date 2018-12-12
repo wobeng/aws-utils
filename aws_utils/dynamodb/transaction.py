@@ -18,24 +18,27 @@ class DynamoDbTransaction:
 
     @transaction
     def post_item(self, key, item, **kwargs):
-        return base.post_item(key, item, **kwargs)
+        return base.post_item(key=key, item=item, **kwargs)
 
     @transaction
     def update_item(self, key, updates=None, deletes=None, adds=None, appends=None, ensure_key_exist=True,
                     **kwargs):
-        return base.update_item(key, updates, deletes, adds, appends, ensure_key_exist, **kwargs)
+        return base.update_item(
+            key=key, updates=updates, deletes=deletes,
+            adds=adds, appends=appends, ensure_key_exist=ensure_key_exist, **kwargs
+        )
 
     @transaction
     def delete_item(self, key, **kwargs):
-        return base.delete_item(key, **kwargs)
+        return base.delete_item(key=key, **kwargs)
 
     @transaction
     def condition_check(self, key, **kwargs):
-        return base.delete_item(key, **kwargs)  # use delete because its the same structure
+        return base.delete_item(key=key, **kwargs)  # use delete because its the same structure
 
     @transaction
     def get_item(self, key, **kwargs):
-        return base.get_item(key, **kwargs)
+        return base.get_item(key=key, **kwargs)
 
     def transact_write(self):
         transact_items = []

@@ -48,7 +48,10 @@ def convert_types(func):
 
     def wrapper(*args, **kwargs):
         args = list(args)
-        args[1] = main(args[1])
+        if 'item' in kwargs:
+            kwargs['item'] = main(kwargs['item'])
+        if 'updates' in kwargs:
+            kwargs['updates'] = main(kwargs['updates'])
         return func(*args, **kwargs)
 
     return wrapper
