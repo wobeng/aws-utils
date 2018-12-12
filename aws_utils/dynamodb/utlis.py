@@ -10,13 +10,13 @@ def transaction(func):
     def wrapper(*args, **kwargs):
         kwargs = func(*args, **kwargs)
         self = args[0]
-        if 'Key' in kwargs:
+        if kwargs.get('Key', False):
             kwargs['Key'] = serialize_input(kwargs['Key'])
-        if 'Item' in kwargs:
+        if kwargs.get('Item', False):
             kwargs['Item'] = serialize_input(kwargs['Item'])
-        if 'ExpressionAttributeValues' in kwargs:
+        if kwargs.get('ExpressionAttributeValues', False):
             kwargs['ExpressionAttributeValues'] = serialize_input(kwargs['ExpressionAttributeValues'])
-        if 'ConditionExpression' in kwargs:
+        if kwargs.get('ConditionExpression', False):
             exp_string, names, values = ConditionExpressionBuilder().build_expression(kwargs['ConditionExpression'])
             values = serialize_input(values)
             kwargs['ConditionExpression'] = exp_string
@@ -48,9 +48,9 @@ def convert_types(func):
 
     def wrapper(*args, **kwargs):
         args = list(args)
-        if 'item' in kwargs:
+        if kwargs.get('item', False):
             kwargs['item'] = main(kwargs['item'])
-        if 'updates' in kwargs:
+        if kwargs.get('updates', False):
             kwargs['updates'] = main(kwargs['updates'])
         return func(*args, **kwargs)
 
@@ -84,7 +84,7 @@ def random_id():
 
 
 def deserialize_item(item):
-    if 'Item' in item and item['Item']:
+    if item.get('Item', False):
         return deserialize_output(item['Item'])
     return {}
 
