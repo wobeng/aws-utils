@@ -18,6 +18,7 @@ class Sns:
 
     def publish(self, subject, message):
         topic_arn = 'arn:aws:sns:{}:{}:{}'.format(self.region_name, self.account_id, self.group_name)
+        print(topic_arn)
         self.client.publish(TopicArn=topic_arn, Message=message, Subject=subject)
 
     def send_exception_email(self, domain, event):

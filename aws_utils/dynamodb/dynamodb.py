@@ -60,6 +60,7 @@ class DynamoDb:
 
     def get_item(self, key, **kwargs):
         kwargs = base.get_item(key=key, **kwargs)
+        print(kwargs)
         response = self.table.get_item(**kwargs)
         if 'Item' in response and response['Item']:
             return response['Item']
