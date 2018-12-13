@@ -28,7 +28,6 @@ def transaction(func):
                 kwargs['ExpressionAttributeValues'].update(values)
             else:
                 kwargs['ExpressionAttributeValues'] = values
-        kwargs['TableName'] = self.table_name
         getattr(self, func.__name__ + '_items').append(kwargs)
         return self
 
