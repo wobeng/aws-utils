@@ -90,14 +90,16 @@ def deserialize_item(item):
 
 def serialize_input(value):
     output = {}
+    ty = TypeSerializer()
     for k, v in value.items():
-        output[k] = TypeSerializer().serialize(v)
+        output[k] = ty.serialize(v)
     return output
 
 
 def deserialize_output(value):
+    ty = TypeDeserializer()
     for k, v in dict(value).items():
-        value[k] = TypeDeserializer().deserialize(v)
+        value[k] = ty.deserialize(v)
     return value
 
 
