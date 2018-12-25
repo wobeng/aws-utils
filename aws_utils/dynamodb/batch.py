@@ -16,6 +16,7 @@ class DynamoDbBatch:
         return self
 
     def batch_read(self):
+        print(self.get_item_items)
         n = 0
         results = {}
         response = self.client.batch_get_item(RequestItems=self.get_item_items)
