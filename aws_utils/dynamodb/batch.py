@@ -18,11 +18,7 @@ class DynamoDbBatch:
     def batch_read(self):
         n = 0
         results = {}
-        request_items = {}
-        print(self.get_item_items)
-        for k in self.get_item_items:
-            request_items[k.pop('TableName')] = k
-        response = self.client.batch_get_item(RequestItems=request_items)
+        response = self.client.batch_get_item(RequestItems=self.get_item_items)
         results.update(response['Responses'])
         while response['UnprocessedKeys']:
             # Implement some kind of exponential back off here
