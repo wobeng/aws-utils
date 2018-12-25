@@ -26,7 +26,6 @@ class DynamoDbBatch:
             time.sleep((2 ** n) + random.randint(0, 1000) / 1000)
             response = self.client.batch_get_item(RequestItems=response['UnprocessedKeys'])
             results.update(response['Responses'])
-        for table, records in results.items():
-            for record in records:
-                deserialize_item(record)
+        for table, records in dict(results).items():
+            results[table] = [deserialize_item(r) for r in records]
         return results
