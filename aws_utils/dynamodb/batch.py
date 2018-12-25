@@ -1,7 +1,7 @@
 import random
 import time
 
-from aws_utils.dynamodb.utlis import deserialize_item, serialize_input, projection_string
+from aws_utils.dynamodb.utlis import deserialize_output, serialize_input, projection_string
 
 
 class DynamoDbBatch:
@@ -27,5 +27,5 @@ class DynamoDbBatch:
             response = self.client.batch_get_item(RequestItems=response['UnprocessedKeys'])
             results.update(response['Responses'])
         for table, records in dict(results).items():
-            results[table] = [deserialize_item(r) for r in records]
+            results[table] = [deserialize_output(r) for r in records]
         return results
