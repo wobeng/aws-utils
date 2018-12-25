@@ -6,7 +6,7 @@ from boto3.dynamodb.conditions import ConditionExpressionBuilder
 from boto3.dynamodb.types import TypeSerializer, TypeDeserializer
 
 
-def transaction(func):
+def queue_input(func):
     def wrapper(*args, **kwargs):
         kwargs = func(*args, **kwargs)
         self = args[0]

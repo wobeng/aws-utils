@@ -1,6 +1,3 @@
-import random
-import time
-
 from boto3.dynamodb.conditions import Key
 
 from aws_utils.dynamodb import base
@@ -11,31 +8,11 @@ class DynamoDb:
     def __init__(self, session):
         self.client = session.client('dynamodb')
         self.resource = session.resource('dynamodb')
-        self.get_items_queue = {}
 
     def __call__(self, table_name=None):
         if table_name:
             self.table_name = table_name
             self.table = self.resource.Table(table_name)
-        return self
-
-    def get_items(self):
-        n = 0
-        results = {}
-        response = self.client.batch_get_item(RequestItems=self.get_items_queue)
-        results.update(response['Responses'])
-        while response['UnprocessedKeys']:
-            # Implement some kind of exponential back off here
-            n = n + 1
-            time.sleep((2 ** n) + random.randint(0, 1000) / 1000)
-            response = self.client.batch_get_item(RequestItems=response['UnprocessedKeys'])
-            results.update(response['Responses'])
-        return results
-
-    @projection_string
-    def add_get_items(self, keys, **kwargs):
-        kwargs['Keys'] = keys
-        self.get_items_queue[self.table] = kwargs
         return self
 
     @projection_string

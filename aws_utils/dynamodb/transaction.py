@@ -1,5 +1,5 @@
 from aws_utils.dynamodb import base
-from aws_utils.dynamodb.utlis import deserialize_item, transaction
+from aws_utils.dynamodb.utlis import deserialize_item, queue_input
 
 
 class DynamoDbTransaction:
@@ -11,11 +11,11 @@ class DynamoDbTransaction:
         self.delete_item_items = []
         self.condition_check_items = []
 
-    @transaction
+    @queue_input
     def post_item(self, table, key, item, **kwargs):
         return base.post_item(TableName=table, key=key, item=item, **kwargs)
 
-    @transaction
+    @queue_input
     def update_item(self, table, key, updates=None, deletes=None, adds=None, appends=None, ensure_key_exist=True,
                     **kwargs):
         return base.update_item(
@@ -23,15 +23,15 @@ class DynamoDbTransaction:
             adds=adds, appends=appends, ensure_key_exist=ensure_key_exist, **kwargs
         )
 
-    @transaction
+    @queue_input
     def delete_item(self, table, key, **kwargs):
         return base.delete_item(TableName=table, key=key, **kwargs)
 
-    @transaction
+    @queue_input
     def condition_check(self, table, key, **kwargs):
         return base.delete_item(TableName=table, key=key, **kwargs)  # use delete because its the same structure
 
-    @transaction
+    @queue_input
     def get_item(self, table, key, **kwargs):
         return base.get_item(TableName=table, key=key, **kwargs)
 
