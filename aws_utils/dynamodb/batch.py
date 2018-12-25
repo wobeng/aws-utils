@@ -1,18 +1,19 @@
 import random
 import time
 
-from aws_utils.dynamodb import base
-from aws_utils.dynamodb.utlis import deserialize_item, queue_input
+from aws_utils.dynamodb.utlis import deserialize_item, serialize_input, projection_string
 
 
 class DynamoDbBatch:
     def __init__(self, session):
         self.client = session.client('dynamodb')
-        self.get_item_items = []
+        self.get_item_items = {}
 
-    @queue_input
-    def get_item(self, table, key, **kwargs):
-        return base.get_item(TableName=table, key=key, **kwargs)
+    @projection_string
+    def get_item(self, table, keys, **kwargs):
+        kwargs['Keys'] = [serialize_input(k) for k in keys]
+        self.get_item_items[table] = kwargs
+        return self
 
     def batch_read(self):
         n = 0
