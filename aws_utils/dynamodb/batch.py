@@ -18,6 +18,7 @@ class DynamoDbBatch:
         n = 0
         results = {}
         request_items = {}
+        print(self.get_item_items)
         for k in self.get_item_items:
             request_items[k.pop('TableName')] = k
         response = self.client.batch_get_item(RequestItems=request_items)
