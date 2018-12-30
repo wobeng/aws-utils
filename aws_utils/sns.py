@@ -1,5 +1,4 @@
 import traceback
-from io import StringIO
 
 from simplejson import dumps
 
@@ -22,8 +21,6 @@ class Sns:
         self.client.publish(TopicArn=topic_arn, Message=message, Subject=subject)
 
     def send_exception_email(self, domain, event):
-        fp = StringIO(dumps(event) + ' \n\n\n')
-        traceback.print_exc(file=fp)
-        message = fp.getvalue()
+        message = dumps(event) + '\n\n\n' + traceback.format_exc()
         subject = 'Error occurred in ' + domain
         self.publish(subject, message)
