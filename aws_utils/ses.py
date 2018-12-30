@@ -19,6 +19,6 @@ class Ses:
         )
 
     def send_exception_email(self, email, domain, event):
-        message = dumps(event) + '\n' + traceback.format_exc().replace('\n', '<br /><br />')
+        message = dumps(event) + '\n\n\n' + traceback.format_exc().replace('\n\n\n', '<br /><br />')
         subject = 'Error occurred in ' + domain
         self.send_email(email, email, subject, message)

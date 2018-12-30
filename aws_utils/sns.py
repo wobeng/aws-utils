@@ -22,7 +22,7 @@ class Sns:
         self.client.publish(TopicArn=topic_arn, Message=message, Subject=subject)
 
     def send_exception_email(self, domain, event):
-        fp = StringIO(dumps(event) + ' \n')
+        fp = StringIO(dumps(event) + ' \n\n\n')
         traceback.print_exc(file=fp)
         message = fp.getvalue()
         subject = 'Error occurred in ' + domain
