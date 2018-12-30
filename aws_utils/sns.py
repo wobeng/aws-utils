@@ -1,6 +1,7 @@
 import traceback
 from io import StringIO
-from json import dumps
+
+from simplejson import dumps
 
 
 class Sns:
