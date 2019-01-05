@@ -7,10 +7,23 @@ from aws_utils.dynamodb.utlis import convert_types, projection_string, random_id
 
 @convert_types
 @projection_string
-def post_item(key, item, **kwargs):
+def post_item(key, item, ensure_key_not_exist=True, **kwargs):
     item = dict(item) or {}
     item.update(key)
     item.setdefault('created_on', datetime.datetime.utcnow().isoformat())
+
+    # ensure not key exist or reject
+    if ensure_key_not_exist:
+        key_not_exist_conditions = None
+        for k in key:
+            key_not_exist_conditions = key_not_exist_conditions & Attr(
+                k).not_exists if key_not_exist_conditions else Attr(k).not_exists
+
+        if 'ConditionExpression' in kwargs:
+            kwargs['ConditionExpression'] = kwargs['ConditionExpression'] & key_not_exist_conditions
+        else:
+            kwargs['ConditionExpression'] = key_not_exist_conditions
+
     kwargs['Item'] = item
     return kwargs
 
