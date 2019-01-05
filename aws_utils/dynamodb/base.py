@@ -16,8 +16,10 @@ def post_item(key, item, ensure_key_not_exist=True, **kwargs):
     if ensure_key_not_exist:
         key_not_exist_conditions = None
         for k in key:
-            key_not_exist_conditions = key_not_exist_conditions & Attr(
-                k).not_exists if key_not_exist_conditions else Attr(k).not_exists
+            if key_not_exist_conditions:
+                key_not_exist_conditions = key_not_exist_conditions and Attr(k).not_exists
+            else:
+                key_not_exist_conditions = Attr(k).not_exists
 
         if 'ConditionExpression' in kwargs:
             kwargs['ConditionExpression'] = kwargs['ConditionExpression'] & key_not_exist_conditions
@@ -111,7 +113,10 @@ def update_item(key, updates=None, deletes=None, adds=None, appends=None, ensure
     if ensure_key_exist:
         key_exist_conditions = None
         for k, v in key.items():
-            key_exist_conditions = key_exist_conditions & Attr(k).eq(v) if key_exist_conditions else Attr(k).eq(v)
+            if key_exist_conditions:
+                key_exist_conditions and Attr(k).eq(v)
+            else:
+                key_exist_conditions = Attr(k).eq(v)
 
         if 'ConditionExpression' in kwargs:
             kwargs['ConditionExpression'] = kwargs['ConditionExpression'] & key_exist_conditions
