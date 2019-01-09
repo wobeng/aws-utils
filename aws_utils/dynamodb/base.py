@@ -1,8 +1,6 @@
-import datetime
-
 from boto3.dynamodb.conditions import Attr
-from pytz import UTC
 
+from aws_utils import datetime_utc
 from aws_utils.dynamodb.utlis import convert_types, projection_string, random_id
 
 
@@ -11,7 +9,7 @@ from aws_utils.dynamodb.utlis import convert_types, projection_string, random_id
 def post_item(key, item, ensure_key_not_exist=True, **kwargs):
     item = dict(item) or {}
     item.update(key)
-    item.setdefault('created_on', datetime.datetime.utcnow().replace(tzinfo=UTC).isoformat())
+    item.setdefault('created_on', datetime_utc().isoformat())
 
     # ensure not key exist or reject
     if ensure_key_not_exist:
@@ -53,7 +51,7 @@ def update_item(key, updates=None, deletes=None, adds=None, appends=None, ensure
     deletes = list(deletes or [])
     adds = dict(adds or {})
     appends = dict(appends or {})
-    updates.setdefault('updated_on', datetime.datetime.utcnow().replace(tzinfo=UTC).isoformat())
+    updates.setdefault('updated_on', datetime_utc().isoformat())
 
     def add_attribute(attribute):
         if '.' not in attribute:
