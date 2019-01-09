@@ -3,3 +3,4 @@ requests_aws4auth
 requests
 cryptography
 simplejson
+pytz

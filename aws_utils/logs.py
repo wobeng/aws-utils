@@ -2,6 +2,7 @@ import time
 from datetime import datetime, timedelta
 
 import botocore.exceptions
+from pytz import UTC
 from simplejson import dumps
 
 
@@ -63,7 +64,7 @@ class Logs:
 
         while True:
 
-            now = datetime.utcnow()
+            now = datetime.utcnow().replace(tzinfo=UTC)
             log_stream = '{}/{}/{}/[$LATEST]{}'.format(now.year, now.month, now.day, log_id)
 
             try:
