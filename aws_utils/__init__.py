@@ -1,5 +1,4 @@
 import boto3
-from pytz import UTC
 from simplejson import dumps
 
 from aws_utils.batch import Batch
@@ -15,12 +14,6 @@ from aws_utils.sns import Sns
 from aws_utils.sqs import Sqs
 from aws_utils.ssm import Ssm
 from aws_utils.swf import Swf
-
-
-def datetime_utc(dt=None):
-    if not dt:
-        dt = dt.datetime.utcnow()
-    return dt.replace(tzinfo=UTC)
 
 
 def client(session=None, profile_name=None, region_name=None):

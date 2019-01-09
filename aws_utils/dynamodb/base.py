@@ -1,7 +1,7 @@
 from boto3.dynamodb.conditions import Attr
 
-from aws_utils import datetime_utc
 from aws_utils.dynamodb.utlis import convert_types, projection_string, random_id
+from aws_utils.utils import datetime_utc
 
 
 @convert_types

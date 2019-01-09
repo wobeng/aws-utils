@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import botocore.exceptions
 from simplejson import dumps
 
-from aws_utils import datetime_utc
+from aws_utils.utils import datetime_utc
 
 
 class Logs:
