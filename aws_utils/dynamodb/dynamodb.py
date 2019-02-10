@@ -65,6 +65,6 @@ class DynamoDb:
         response['Adds'] = adds
         response['Appends'] = appends
         if 'Attributes' in response and updates:
-            response['OldAttributes'] = response['Attributes']
-            response['OldAttributes'].update(updates)
+            response['NewAttributes'] = response['Attributes']
+            response['NewAttributes'].update(updates)
         return response
