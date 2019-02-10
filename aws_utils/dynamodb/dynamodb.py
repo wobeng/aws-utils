@@ -64,4 +64,7 @@ class DynamoDb:
         response['Deletes'] = deletes
         response['Adds'] = adds
         response['Appends'] = appends
+        if 'Attributes' in response:
+            response['OldAttributes'] = response['Attributes']
+            response['OldAttributes'].update(updates)
         return response
