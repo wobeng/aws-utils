@@ -18,13 +18,12 @@ class DynamoDbBatch:
     def post_item(self, table, item):
         if table not in self.request_items:
             self.request_items[table] = []
-        self.request_items[table].append({'PutRequest': {'Item':  serialize_input(item)}})
-
+        self.request_items[table].append({'PutRequest': {'Item': serialize_input(item)}})
 
     def delete_item(self, table, key):
         if table not in self.request_items:
             self.request_items[table] = []
-        self.request_items[table].append({'DeleteRequest': {'Key':  serialize_input(key)}})
+        self.request_items[table].append({'DeleteRequest': {'Key': serialize_input(key)}})
 
     def batch_read(self):
         n = 0
@@ -41,7 +40,6 @@ class DynamoDbBatch:
             results[table] = [deserialize_output(r) for r in records]
         return results
 
-
     def batch_write(self):
         n = 0
         response = self.client.batch_write_item(RequestItems=self.request_items)
@@ -50,4 +48,3 @@ class DynamoDbBatch:
             n = n + 1
             time.sleep((2 ** n) + random.randint(0, 1000) / 1000)
             response = self.client.batch_write_item(RequestItems=response['UnprocessedItems'])
-

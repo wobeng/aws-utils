@@ -22,11 +22,11 @@ def queue_input(func):
             kwargs['ConditionExpression'] = exp_string
             if 'ExpressionAttributeNames' in kwargs:
                 kwargs['ExpressionAttributeNames'].update(names)
-            else:
+            elif names:
                 kwargs['ExpressionAttributeNames'] = names
             if 'ExpressionAttributeValues' in kwargs:
                 kwargs['ExpressionAttributeValues'].update(values)
-            else:
+            elif values:
                 kwargs['ExpressionAttributeValues'] = values
         getattr(self, func.__name__ + '_items').append(kwargs)
         return self
