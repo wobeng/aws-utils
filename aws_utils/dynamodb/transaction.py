@@ -49,6 +49,7 @@ class DynamoDbTransaction:
                     transact_items.append({k: item})
         print(transact_items)
         response = self.client.transact_write_items(TransactItems=transact_items)
+        print(response)
         return response
 
     def transact_read(self):

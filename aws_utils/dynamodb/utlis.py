@@ -28,6 +28,7 @@ def queue_input(func):
                 kwargs['ExpressionAttributeValues'].update(values)
             elif values:
                 kwargs['ExpressionAttributeValues'] = values
+            kwargs['ReturnValuesOnConditionCheckFailure'] = 'ALL_OLD'
         getattr(self, func.__name__ + '_items').append(kwargs)
         return self
 
