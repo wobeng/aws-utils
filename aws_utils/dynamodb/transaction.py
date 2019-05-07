@@ -54,6 +54,5 @@ class DynamoDbTransaction:
 
     def transact_read(self):
         transact_items = [{'Get': item} for item in self.get_item_items]
-        print('transact ==> ', transact_items)
         response = self.client.transact_get_items(TransactItems=transact_items)
         return [deserialize_item(item) for item in response['Responses'] if item]
