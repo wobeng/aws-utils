@@ -47,12 +47,10 @@ class DynamoDbTransaction:
             if v:
                 for item in v:
                     transact_items.append({k: item})
-        print(transact_items)
         response = self.client.transact_write_items(TransactItems=transact_items)
         return response
 
     def transact_read(self):
         transact_items = [{'Get': item} for item in self.get_item_items]
-        print(transact_items)
         response = self.client.transact_get_items(TransactItems=transact_items)
         return [deserialize_item(item) for item in response['Responses'] if item]
