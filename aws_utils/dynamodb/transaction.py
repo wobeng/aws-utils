@@ -47,9 +47,7 @@ class DynamoDbTransaction:
             if v:
                 for item in v:
                     transact_items.append({k: item})
-        print(transact_items)
         response = self.client.transact_write_items(TransactItems=transact_items)
-        print('transact ==> ', response)
         return response
 
     def transact_read(self):
