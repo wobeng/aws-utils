@@ -35,7 +35,7 @@ class DynamoDbTransaction:
     def get_item(self, table, key, **kwargs):
         return base.get_item(TableName=table, key=key, **kwargs)
 
-    def transact_write(self):
+    def transact_write(self, debug=False):
         transact_items = []
         m = {
             'Put': self.post_item_items,
@@ -47,10 +47,14 @@ class DynamoDbTransaction:
             if v:
                 for item in v:
                     transact_items.append({k: item})
+        if debug:
+            print(transact_items)
         response = self.client.transact_write_items(TransactItems=transact_items)
         return response
 
-    def transact_read(self):
+    def transact_read(self,debug=False):
         transact_items = [{'Get': item} for item in self.get_item_items]
+        if debug:
+            print(transact_items)
         response = self.client.transact_get_items(TransactItems=transact_items)
         return [deserialize_item(item) for item in response['Responses'] if item]
