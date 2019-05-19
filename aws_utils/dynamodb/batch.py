@@ -42,7 +42,9 @@ class DynamoDbBatch:
 
     def batch_write(self):
         n = 0
+        print(self.request_items)
         response = self.client.batch_write_item(RequestItems=self.request_items)
+        print(response['UnprocessedItems'])
         while response['UnprocessedItems']:
             # Implement some kind of exponential back off here
             n = n + 1
