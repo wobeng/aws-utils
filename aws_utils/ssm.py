@@ -19,7 +19,7 @@ class Ssm:
             TableName='Vars',
             Item={
                 'vars': {
-                    'S': value,
+                    'S': name,
                 }}
         )
         return value
