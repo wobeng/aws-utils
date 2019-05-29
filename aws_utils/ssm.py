@@ -12,14 +12,8 @@ class Ssm:
         if not value:
             try:
                 value = self.client.get_parameter(Name=name, WithDecryption=True)['Parameter']['Value']
+                self.db.put_item(TableName='Vars', Item={'vars': {'S': name}})
                 os.environ[name] = value
             except BaseException as e:
                 print(name, e)
-        self.db.put_item(
-            TableName='Vars',
-            Item={
-                'vars': {
-                    'S': name,
-                }}
-        )
         return value
