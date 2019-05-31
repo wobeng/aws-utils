@@ -14,6 +14,7 @@ setup(
         'requests_aws4auth',
         'requests',
         'cryptography',
-        'simplejson'
+        'simplejson',
+        'pytz'
     ]
 )
