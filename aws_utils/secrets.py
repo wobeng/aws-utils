@@ -1,4 +1,5 @@
 import json
+from os import environ
 
 
 class Secrets:
@@ -7,4 +8,6 @@ class Secrets:
 
     def parameter(self, name):
         response = self.client.get_secret_value(SecretId=name)
-        return json.loads(response['SecretString'])
+        secrets = json.loads(response['SecretString'])
+        for name, secret in secrets.items():
+            environ[name] = secret
