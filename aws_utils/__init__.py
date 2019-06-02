@@ -8,6 +8,7 @@ from aws_utils.dynamodb.transaction import DynamoDbTransaction
 from aws_utils.gateway import Gateway
 from aws_utils.logs import Logs
 from aws_utils.s3 import S3
+from aws_utils.secrets import Secrets
 from aws_utils.ses import Ses
 from aws_utils.sf import Sf
 from aws_utils.sns import Sns
@@ -63,6 +64,10 @@ class Aws:
     @property
     def logs(self):
         return Logs(self.session)
+
+    @property
+    def secrets(self):
+        return Secrets(self.session)
 
     @property
     def s3(self):

@@ -52,7 +52,7 @@ class DynamoDbTransaction:
         response = self.client.transact_write_items(TransactItems=transact_items)
         return response
 
-    def transact_read(self,debug=False):
+    def transact_read(self, debug=False):
         transact_items = [{'Get': item} for item in self.get_item_items]
         if debug:
             print(transact_items)
