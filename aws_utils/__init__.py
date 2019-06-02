@@ -17,8 +17,8 @@ from aws_utils.ssm import Ssm
 from aws_utils.swf import Swf
 
 
-def client(session=None, profile_name=None, region_name=None):
-    aws = Aws(session, profile_name, region_name)
+def client(session=None, profile_name=None, region_name=None, secret_names=None):
+    aws = Aws(session, profile_name, region_name, secret_names)
     return aws
 
 
