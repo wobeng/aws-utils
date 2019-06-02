@@ -23,9 +23,12 @@ def client(session=None, profile_name=None, region_name=None):
 
 
 class Aws:
-    def __init__(self, session=None, profile_name=None, region_name=None):
+    def __init__(self, session=None, profile_name=None, region_name=None, secret_names=None):
         self.client = None
         self.session = session or boto3.session.Session(profile_name=profile_name, region_name=region_name)
+        if secret_names:
+            for secret_name in secret_names:
+                self.secrets.load(secret_name)
 
     def __call__(self, service):
         return self.session.client(service)
